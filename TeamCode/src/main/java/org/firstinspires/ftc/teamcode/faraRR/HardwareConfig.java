@@ -27,6 +27,9 @@ public class HardwareConfig {
     public Servo impins;
     public Servo intake3;
 
+    public Servo baraS;
+    public Servo baraD;
+
     public HardwareConfig(HardwareMap hw) {
         /// Control Hub
         rightFront = hw.get(DcMotor.class, "right_front");
@@ -51,10 +54,14 @@ public class HardwareConfig {
 
         lansat = hw.get(DcMotor.class, "odoCenter");
         lansat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //lansat.setDirection(DcMotorSimple.Direction.REVERSE);
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
         intake3 = hw.get(Servo.class, "intake3");
+
+        baraD = hw.get(Servo.class, "baraD");
+        baraS = hw.get(Servo.class, "baraS");
 
         // Servo Init
         //cuva.setPosition(0.5);

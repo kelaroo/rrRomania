@@ -63,15 +63,24 @@ public class TwoDriver extends OpMode {
             hw.cuva.setPosition(CUVA_JOS);
         }
 
-        if(gamepad2.left_bumper) {
+        // Impins
+        if(gamepad2.left_bumper)
             hw.impins.setPosition(IMPINS_FWD);
-        } else
+        else
             hw.impins.setPosition(IMPINS_BWD);
 
         if(gamepad2.right_bumper) {
-            hw.lansat.setPower(1);
+            hw.lansat.setPower(LANSAT_POWER);
         } else {
             hw.lansat.setPower(0);
+        }
+
+        if(gamepad2.b) {
+            hw.baraD.setPosition(BARAD_INT);
+            hw.baraS.setPosition(BARAS_INT);
+        } else if(gamepad2.x) {
+            hw.baraD.setPosition(BARAD_EXT);
+            hw.baraS.setPosition(BARAS_EXT);
         }
     }
 }
