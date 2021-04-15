@@ -8,15 +8,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class ConfigTest extends OpMode {
 
-    HardwareConfig hw;
+    HardwareConfig2 hw;
 
-    DcMotor odoRight;
+    /*DcMotor odoRight;
     DcMotor odoCenter;
-    DcMotor odoLeft;
+    DcMotor odoLeft;*/
 
     @Override
     public void init() {
-        hw = new HardwareConfig(hardwareMap);
+        hw = new HardwareConfig2(hardwareMap);
 
         /*odoRight = hardwareMap.get(DcMotor.class, "odoRight");
         odoCenter = hardwareMap.get(DcMotor.class, "odoCenter");
@@ -54,9 +54,9 @@ public class ConfigTest extends OpMode {
         telemetry.addData("leftBack", hw.leftBack.getCurrentPosition());
         telemetry.addData("leftFront", hw.leftFront.getCurrentPosition());
 
-        telemetry.addData("odoRight", odoRight.getCurrentPosition());
+        /*telemetry.addData("odoRight", odoRight.getCurrentPosition());
         telemetry.addData("odoCenter", odoCenter.getCurrentPosition());
-        telemetry.addData("odoLeft", odoLeft.getCurrentPosition());
+        telemetry.addData("odoLeft", odoLeft.getCurrentPosition());*/
     }
 
 }

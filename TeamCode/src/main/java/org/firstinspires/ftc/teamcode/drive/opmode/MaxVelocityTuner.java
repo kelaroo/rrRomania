@@ -67,6 +67,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         drive.setDrivePower(new Pose2d());
 
+        // DriveConstants2.getMotorVelocityF(veloInchesToTicks(maxVelocity));
         double effectiveKf = DriveConstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
 
         telemetry.addData("Max Velocity", maxVelocity);
@@ -77,6 +78,8 @@ public class MaxVelocityTuner extends LinearOpMode {
     }
 
     private double veloInchesToTicks(double inchesPerSec) {
+        // (2 * Math.PI * DriveConstants.WHEEL_RADIUS) / DriveConstants.GEAR_RATIO * DriveConstants.TICKS_PER_REV;
+        // (2 * Math.PI * DriveConstants2.WHEEL_RADIUS) / DriveConstants2.GEAR_RATIO * DriveConstants2.TICKS_PER_REV;
         return inchesPerSec / (2 * Math.PI * DriveConstants.WHEEL_RADIUS) / DriveConstants.GEAR_RATIO * DriveConstants.TICKS_PER_REV;
     }
 }

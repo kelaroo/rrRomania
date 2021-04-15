@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.faraRR;
 
+import android.telecom.TelecomManager;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -59,7 +61,6 @@ public class TwoDriver extends OpMode {
         if(gamepad2.y) {
             hw.cuva.setPosition(CUVA_SUS);
         } else if(gamepad2.a) {
-            hw.impins.setPosition(IMPINS_BWD);
             hw.cuva.setPosition(CUVA_JOS);
         }
 
@@ -81,6 +82,20 @@ public class TwoDriver extends OpMode {
         } else if(gamepad2.x) {
             hw.baraD.setPosition(BARAD_EXT);
             hw.baraS.setPosition(BARAS_EXT);
+        }
+
+        if(gamepad2.dpad_up) {
+            hw.bratWobble.setPosition(BRAT_SUS);
+            telemetry.addData("cox", "cox");
+        } else if(gamepad2.dpad_down) {
+            telemetry.addData("cox", "tony");
+            hw.bratWobble.setPosition(BRAT_JOS);
+        }
+
+        if(gamepad2.dpad_right) {
+            hw.clawWobble.setPosition(CLAW_PRINS);
+        } else if(gamepad2.dpad_left) {
+            hw.clawWobble.setPosition(CLAW_LASAT);
         }
     }
 }
