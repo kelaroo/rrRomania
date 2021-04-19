@@ -15,7 +15,7 @@ public class TwoDriver extends OpMode {
     enum CuvaState {
         SUS, JOS
     }
-    CuvaState cuvaState = CuvaState.JOS;
+    CuvaState cuvaState = CuvaState.SUS;
 
     @Override
     public void init() {
@@ -94,13 +94,14 @@ public class TwoDriver extends OpMode {
             cuvaState = CuvaState.SUS;
         } else if(gamepad2.a) {
             hw.cuva.setPosition(CUVA_JOS);
+            hw.impins.setPosition(IMPINS_SECOND);
             cuvaState = CuvaState.JOS;
         }
 
         // Impins
         if(gamepad2.left_bumper && cuvaState == CuvaState.SUS)
             hw.impins.setPosition(IMPINS_FWD);
-        else
+        else if(cuvaState == CuvaState.SUS)
             hw.impins.setPosition(IMPINS_BWD);
 
         if(gamepad2.right_bumper) {

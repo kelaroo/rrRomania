@@ -20,8 +20,9 @@ public class PowersConfig {
     public static final double CUVA_SUS = 0.28;
     public static final double CUVA_JOS = 0.63;
 
-    public static final double IMPINS_FWD = 0.1;
-    public static final double IMPINS_BWD = 0.3;
+    public static final double IMPINS_FWD = 0;
+    public static final double IMPINS_SECOND = 0.3;
+    public static final double IMPINS_BWD = 0.25;
 
     public static final double BARAD_EXT = 0.08;
     public static final double BARAD_INT = 0.4;
