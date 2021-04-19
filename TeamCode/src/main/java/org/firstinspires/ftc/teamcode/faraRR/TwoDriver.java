@@ -48,6 +48,32 @@ public class TwoDriver extends OpMode {
         /// Driver 2
 
         // Intake
+        if(cuvaState == CuvaState.JOS) {
+            if(gamepad2.left_trigger > 0.2) {
+                hw.intake.setPower(INTAKE_SUCK);
+                hw.intake2.setPosition(INTAKE2_RIGHT);
+                hw.intake3.setPosition(INTAKE3_RIGHT);
+            } else if(gamepad2.right_trigger > 0.2) {
+                hw.intake.setPower(-INTAKE_SUCK);
+                hw.intake2.setPosition(INTAKE2_LEFT);
+                hw.intake3.setPosition(INTAKE3_LEFT);
+            } else {
+                hw.intake.setPower(0);
+                hw.intake2.setPosition(INTAKE2_STATIONARY);
+                hw.intake3.setPosition(INTAKE3_STATIONARY);
+            }
+        } else {
+            if(gamepad2.left_trigger > 0.2) {
+                hw.intake3.setPosition(INTAKE3_RIGHT);
+            } else if(gamepad2.right_trigger > 0.2) {
+                hw.intake3.setPosition(INTAKE3_LEFT);
+            } else {
+                hw.intake.setPower(0);
+                hw.intake2.setPosition(INTAKE2_STATIONARY);
+                hw.intake3.setPosition(INTAKE3_STATIONARY);
+            }
+        }
+/*
         if(gamepad2.left_trigger > 0.2 && cuvaState == CuvaState.JOS) {
             hw.intake.setPower(INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_RIGHT);
@@ -60,7 +86,7 @@ public class TwoDriver extends OpMode {
             hw.intake.setPower(0);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
             hw.intake3.setPosition(INTAKE3_STATIONARY);
-        }
+        }*/
 
         // Cuva
         if(gamepad2.y) {

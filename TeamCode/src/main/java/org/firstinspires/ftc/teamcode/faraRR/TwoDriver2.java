@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.faraRR;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_LASAT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_PRINS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig2.*;
 /*
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAD_EXT;
@@ -92,6 +96,20 @@ public class TwoDriver2 extends OpMode {
             hw.lansat.setPower(LANSAT_POWER);
         } else {
             hw.lansat.setPower(0);
+        }
+
+        // Wobble Arm
+        if(gamepad2.dpad_up) {
+            hw.bratWobble.setPosition(BRAT_SUS);
+        } else if(gamepad2.dpad_down) {
+            hw.bratWobble.setPosition(BRAT_JOS);
+        }
+
+        // Wobble claw
+        if(gamepad2.dpad_right) {
+            hw.clawWobble.setPosition(CLAW_PRINS);
+        } else if(gamepad2.dpad_left) {
+            hw.clawWobble.setPosition(CLAW_LASAT);
         }
     }
 }

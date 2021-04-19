@@ -22,4 +22,9 @@ public class PowersConfig2 {
 
     public static final double IMPINS_FWD = 0;
     public static final double IMPINS_BWD = 0.2;
+
+    public static final double BRAT_SUS = 0.98;
+    public static final double BRAT_JOS = 0.5;
+    public static final double CLAW_PRINS = 0.25;
+    public static final double CLAW_LASAT = 0.65;
 }

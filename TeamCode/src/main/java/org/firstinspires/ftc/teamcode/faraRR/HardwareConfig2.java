@@ -9,21 +9,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HardwareConfig2 {
-    public DcMotor rightFront;
-    public DcMotor rightBack;
-    public DcMotor leftBack;
-    public DcMotor leftFront;
+    public DcMotor rightFront; // eh 3
+    public DcMotor rightBack; // ch 1
+    public DcMotor leftBack; // eh 1
+    public DcMotor leftFront; // eh 0
     public List<DcMotor> lDriveMotors;
 
-    public Servo intake2;
+    public Servo intake2; // ch 0
 
     // Expansion Hub
-    public DcMotor intake;
-    public DcMotor lansat;
+    public DcMotor intake; // eh 2
+    public DcMotor lansat; // ch 0
 
-    public Servo cuva;
-    public Servo impins;
-    public Servo intake3;
+    public Servo cuva; // eh 1
+    public Servo impins; // ch 1
+    public Servo intake3; // eh 0
+
+    public Servo bratWobble; // eh 2
+    public Servo clawWobble; // eh 3
 
     public HardwareConfig2(HardwareMap hw) {
         /// Control Hub
@@ -54,6 +57,9 @@ public class HardwareConfig2 {
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
         intake3 = hw.get(Servo.class, "intake3");
+
+        bratWobble = hw.get(Servo.class, "bratWobble");
+        clawWobble = hw.get(Servo.class, "clawWobble");
 
         // Servo Init
         //cuva.setPosition(0.5);
