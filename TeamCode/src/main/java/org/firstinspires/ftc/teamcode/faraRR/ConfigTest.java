@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class ConfigTest extends OpMode {
 
-    HardwareConfig2 hw;
+    HardwareConfig hw;
 
     /*DcMotor odoRight;
     DcMotor odoCenter;
@@ -16,7 +16,7 @@ public class ConfigTest extends OpMode {
 
     @Override
     public void init() {
-        hw = new HardwareConfig2(hardwareMap);
+        hw = new HardwareConfig(hardwareMap);
 
         /*odoRight = hardwareMap.get(DcMotor.class, "odoRight");
         odoCenter = hardwareMap.get(DcMotor.class, "odoCenter");

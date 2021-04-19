@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.faraRR;
 
-import android.telecom.TelecomManager;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,6 +12,10 @@ public class TwoDriver extends OpMode {
 
     double coeff = COEFF_SPEED_HIGH;
 
+    enum CuvaState {
+        SUS, JOS
+    }
+    CuvaState cuvaState = CuvaState.JOS;
 
     @Override
     public void init() {
@@ -44,7 +46,9 @@ public class TwoDriver extends OpMode {
         hw.rightBack.setPower(RB);
 
         /// Driver 2
-        if(gamepad2.left_trigger > 0.2) {
+
+        // Intake
+        if(gamepad2.left_trigger > 0.2 && cuvaState == CuvaState.JOS) {
             hw.intake.setPower(INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_RIGHT);
             hw.intake3.setPosition(INTAKE3_RIGHT);
@@ -58,14 +62,17 @@ public class TwoDriver extends OpMode {
             hw.intake3.setPosition(INTAKE3_STATIONARY);
         }
 
+        // Cuva
         if(gamepad2.y) {
             hw.cuva.setPosition(CUVA_SUS);
+            cuvaState = CuvaState.SUS;
         } else if(gamepad2.a) {
             hw.cuva.setPosition(CUVA_JOS);
+            cuvaState = CuvaState.JOS;
         }
 
         // Impins
-        if(gamepad2.left_bumper)
+        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS)
             hw.impins.setPosition(IMPINS_FWD);
         else
             hw.impins.setPosition(IMPINS_BWD);
@@ -76,6 +83,7 @@ public class TwoDriver extends OpMode {
             hw.lansat.setPower(0);
         }
 
+        // Brate
         if(gamepad2.b) {
             hw.baraD.setPosition(BARAD_INT);
             hw.baraS.setPosition(BARAS_INT);
@@ -84,14 +92,14 @@ public class TwoDriver extends OpMode {
             hw.baraS.setPosition(BARAS_EXT);
         }
 
+        // Wobble Arm
         if(gamepad2.dpad_up) {
             hw.bratWobble.setPosition(BRAT_SUS);
-            telemetry.addData("cox", "cox");
         } else if(gamepad2.dpad_down) {
-            telemetry.addData("cox", "tony");
             hw.bratWobble.setPosition(BRAT_JOS);
         }
 
+        // Wobble claw
         if(gamepad2.dpad_right) {
             hw.clawWobble.setPosition(CLAW_PRINS);
         } else if(gamepad2.dpad_left) {
