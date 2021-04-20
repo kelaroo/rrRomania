@@ -17,8 +17,8 @@ public class PowersConfig2 {
     public static final double INTAKE3_LEFT = 0;
     public static final double INTAKE3_STATIONARY = 0.5;
 
-    public static final double CUVA_SUS = 0.35;
-    public static final double CUVA_JOS = 0.65;
+    public static final double CUVA_SUS = 0.285;
+    public static final double CUVA_JOS = 0.55;
 
     public static final double IMPINS_FWD = 0;
     public static final double IMPINS_BWD = 0.2;

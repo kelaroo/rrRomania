@@ -37,7 +37,7 @@ public class Camera {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
         });
 
@@ -57,7 +57,7 @@ public class Camera {
 
         @Override
         public Mat processFrame(Mat input) {
-            Rect cropRect = new Rect(137, 120, 85, 85);
+            Rect cropRect = new Rect(105, 35, 100, 100);
 
             input = input.submat(cropRect);
             Mat filtered = input.clone();

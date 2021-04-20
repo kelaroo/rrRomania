@@ -35,6 +35,15 @@ public class TwoDriver extends OpMode {
         if(gamepad1.x)
             coeff = COEFF_SPEED_LOW;
 
+        // Brate
+        if(gamepad1.left_trigger > 0.2) {
+            hw.baraD.setPosition(BARAD_INT);
+            hw.baraS.setPosition(BARAS_INT);
+        } else if(gamepad1.right_trigger > 0.2) {
+            hw.baraD.setPosition(BARAD_EXT);
+            hw.baraS.setPosition(BARAS_EXT);
+        }
+
         double RF = hw.clipPower(drive - strafe - rotate) * coeff;
         double RB = hw.clipPower(drive + strafe - rotate) * coeff;
         double LB = hw.clipPower(drive - strafe + rotate) * coeff;
@@ -108,15 +117,6 @@ public class TwoDriver extends OpMode {
             hw.lansat.setPower(LANSAT_POWER);
         } else {
             hw.lansat.setPower(0);
-        }
-
-        // Brate
-        if(gamepad2.b) {
-            hw.baraD.setPosition(BARAD_INT);
-            hw.baraS.setPosition(BARAS_INT);
-        } else if(gamepad2.x) {
-            hw.baraD.setPosition(BARAD_EXT);
-            hw.baraS.setPosition(BARAS_EXT);
         }
 
         // Wobble Arm
