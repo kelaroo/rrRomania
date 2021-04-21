@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.faraRR;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
@@ -16,6 +17,12 @@ public class TwoDriver extends OpMode {
         SUS, JOS
     }
     CuvaState cuvaState = CuvaState.SUS;
+
+    enum ShootState {
+        SHOOTING, IDLE
+    }
+    volatile ShootState shootState = ShootState.IDLE;
+    volatile int nr = 0;
 
     @Override
     public void init() {
@@ -82,20 +89,6 @@ public class TwoDriver extends OpMode {
                 hw.intake3.setPosition(INTAKE3_STATIONARY);
             }
         }
-/*
-        if(gamepad2.left_trigger > 0.2 && cuvaState == CuvaState.JOS) {
-            hw.intake.setPower(INTAKE_SUCK);
-            hw.intake2.setPosition(INTAKE2_RIGHT);
-            hw.intake3.setPosition(INTAKE3_RIGHT);
-        } else if(gamepad2.right_trigger > 0.2) {
-            hw.intake.setPower(-INTAKE_SUCK);
-            hw.intake2.setPosition(INTAKE2_LEFT);
-            hw.intake3.setPosition(INTAKE3_LEFT);
-        } else {
-            hw.intake.setPower(0);
-            hw.intake2.setPosition(INTAKE2_STATIONARY);
-            hw.intake3.setPosition(INTAKE3_STATIONARY);
-        }*/
 
         // Cuva
         if(gamepad2.y) {
@@ -107,11 +100,19 @@ public class TwoDriver extends OpMode {
             cuvaState = CuvaState.JOS;
         }
 
-        // Impins
+        /*// Impins
         if(gamepad2.left_bumper && cuvaState == CuvaState.SUS)
             hw.impins.setPosition(IMPINS_FWD);
         else if(cuvaState == CuvaState.SUS)
+            hw.impins.setPosition(IMPINS_BWD);*/
+
+        // Impins
+        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
+            Thread tAutoShoot = new Thread(new OneButtonShoot());
+            tAutoShoot.start();
+        } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
             hw.impins.setPosition(IMPINS_BWD);
+        }
 
         if(gamepad2.right_bumper) {
             hw.lansat.setPower(LANSAT_POWER);
@@ -131,6 +132,35 @@ public class TwoDriver extends OpMode {
             hw.clawWobble.setPosition(CLAW_PRINS);
         } else if(gamepad2.dpad_left) {
             hw.clawWobble.setPosition(CLAW_LASAT);
+        }
+    }
+
+    private class OneButtonShoot implements Runnable {
+
+        @Override
+        public void run() {
+            telemetry.addData("Thread", "started");
+            ElapsedTime timer = new ElapsedTime();
+            shootState = ShootState.SHOOTING;
+
+            for(int i = 1; i <= 3; i++) {
+                if(cuvaState == CuvaState.JOS)
+                    break;
+
+                telemetry.addData("Thread", String.format("Shoot %d", i));
+                hw.impins.setPosition(IMPINS_FWD);
+                timer.reset();
+                while(timer.milliseconds() < 250)
+                    ;
+
+                hw.impins.setPosition(IMPINS_BWD);
+                timer.reset();
+                while(timer.milliseconds() < 250)
+                    ;
+            }
+
+            shootState = ShootState.IDLE;
+            telemetry.update();
         }
     }
 }
