@@ -20,11 +20,11 @@ public class PowersConfig2 {
     public static final double CUVA_SUS = 0.44;
     public static final double CUVA_JOS = 0.74;
 
-    public static final double IMPINS_FWD = 0.36;
-    public static final double IMPINS_BWD = 0.6;
+    public static final double IMPINS_FWD = 0.55;
+    public static final double IMPINS_BWD = 0.75;
 
-    public static final double BRAT_SUS = 1;
-    public static final double BRAT_JOS = 0.4;
+    public static final double BRAT_SUS = 0.2;
+    public static final double BRAT_JOS = 1;
     public static final double CLAW_PRINS = 0.325;
     public static final double CLAW_LASAT = 0.75;
 }
