@@ -110,7 +110,9 @@ public class TwoDriver extends OpMode {
         if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
             Thread tAutoShoot = new Thread(new OneButtonShoot());
             tAutoShoot.start();
+
         } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
+
             hw.impins.setPosition(IMPINS_BWD);
         }
 
@@ -150,13 +152,13 @@ public class TwoDriver extends OpMode {
                 telemetry.addData("Thread", String.format("Shoot %d", i));
                 hw.impins.setPosition(IMPINS_FWD);
                 timer.reset();
-                while(timer.milliseconds() < 250)
-                    ;
+                while(timer.milliseconds() < 400)
+                    continue;
 
                 hw.impins.setPosition(IMPINS_BWD);
                 timer.reset();
-                while(timer.milliseconds() < 250)
-                    ;
+                while(timer.milliseconds() < 400)
+                    continue;
             }
 
             shootState = ShootState.IDLE;

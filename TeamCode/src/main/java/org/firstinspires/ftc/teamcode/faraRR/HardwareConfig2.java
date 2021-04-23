@@ -41,7 +41,7 @@ public class HardwareConfig2 {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        //leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intake2 = hw.get(Servo.class, "intake2");

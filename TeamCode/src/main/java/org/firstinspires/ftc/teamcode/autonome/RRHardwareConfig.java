@@ -21,7 +21,6 @@ public class RRHardwareConfig {
     public DcMotor lansat;
     public Servo impins;
 
-
     public Servo baraS;
     public Servo baraD;
 
@@ -44,7 +43,7 @@ public class RRHardwareConfig {
         baraS = hw.get(Servo.class, "baraS");
 
         // Servo init
-        cuva.setPosition(CUVA_SUS);
+        cuva.setPosition(CUVA_JOS);
         bratWobble.setPosition(BRAT_SUS);
         clawWobble.setPosition(CLAW_PRINS);
         impins.setPosition(IMPINS_BWD);
