@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.apache.commons.math3.analysis.solvers.BracketedRealFieldUnivariateSolver;
-
 import java.util.Arrays;
 import java.util.List;
+
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 public class HardwareConfig {
     public DcMotor rightFront;
@@ -20,6 +20,7 @@ public class HardwareConfig {
     public Servo intake2;
     public Servo bratWobble;
     public Servo clawWobble;
+    public Servo bratOprit; // ch 5
 
     // Expansion Hub
     public DcMotor intake;
@@ -28,6 +29,8 @@ public class HardwareConfig {
     public Servo cuva;
     public Servo impins;
     public Servo intake3;
+
+    public Servo baraOprit; // eh 3
 
     public Servo baraS;
     public Servo baraD;
@@ -67,8 +70,13 @@ public class HardwareConfig {
         baraD = hw.get(Servo.class, "baraD");
         baraS = hw.get(Servo.class, "baraS");
 
+        bratOprit = hw.get(Servo.class, "bratOprit");
+        baraOprit = hw.get(Servo.class, "baraOprit");
+
         // Servo Init
         //cuva.setPosition(0.5);
+        bratOprit.setPosition(BRAT_OPRIT_INT);
+        baraOprit.setPosition(BARA_OPRIT_INT);
     }
 
     public double clipPower(double power) {

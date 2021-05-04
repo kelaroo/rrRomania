@@ -30,6 +30,16 @@ public class TwoDriver extends OpMode {
     }
 
     @Override
+    public void start() {
+        super.start();
+        hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
+        hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+
+        hw.cuva.setPosition(CUVA_JOS);
+        cuvaState = CuvaState.JOS;
+    }
+
+    @Override
     public void loop() {
 
         /// Driver 1
@@ -135,6 +145,15 @@ public class TwoDriver extends OpMode {
         } else if(gamepad2.dpad_left) {
             hw.clawWobble.setPosition(CLAW_LASAT);
         }
+
+        // Bara oprit
+        if(gamepad2.left_stick_button) {
+            hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+            hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
+        } else if(gamepad2.right_stick_button) {
+            hw.baraOprit.setPosition(BARA_OPRIT_INT);
+            hw.bratOprit.setPosition(BRAT_OPRIT_INT);
+        }
     }
 
     private class OneButtonShoot implements Runnable {
@@ -145,19 +164,16 @@ public class TwoDriver extends OpMode {
             ElapsedTime timer = new ElapsedTime();
             shootState = ShootState.SHOOTING;
 
-            for(int i = 1; i <= 3; i++) {
-                if(cuvaState == CuvaState.JOS)
-                    break;
-
+            for(int i = 1; i <= 3 && cuvaState == CuvaState.SUS; i++) {
                 telemetry.addData("Thread", String.format("Shoot %d", i));
                 hw.impins.setPosition(IMPINS_FWD);
                 timer.reset();
-                while(timer.milliseconds() < 400)
+                while(timer.milliseconds() < 100)
                     continue;
 
                 hw.impins.setPosition(IMPINS_BWD);
                 timer.reset();
-                while(timer.milliseconds() < 400)
+                while(timer.milliseconds() < 100)
                     continue;
             }
 
