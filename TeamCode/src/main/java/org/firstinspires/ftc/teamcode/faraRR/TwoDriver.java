@@ -126,6 +126,12 @@ public class TwoDriver extends OpMode {
             hw.impins.setPosition(IMPINS_BWD);
         }
 
+        // Impins manual
+        if(gamepad2.x && shootState == ShootState.IDLE)
+            hw.impins.setPosition(IMPINS_FWD);
+        else if(shootState == ShootState.IDLE)
+            hw.impins.setPosition(IMPINS_BWD);
+
         if(gamepad2.right_bumper) {
             hw.lansat.setPower(LANSAT_POWER);
         } else {
@@ -168,12 +174,12 @@ public class TwoDriver extends OpMode {
                 telemetry.addData("Thread", String.format("Shoot %d", i));
                 hw.impins.setPosition(IMPINS_FWD);
                 timer.reset();
-                while(timer.milliseconds() < 100)
+                while(timer.milliseconds() < 250s)
                     continue;
 
                 hw.impins.setPosition(IMPINS_BWD);
                 timer.reset();
-                while(timer.milliseconds() < 100)
+                while(timer.milliseconds() < 250)
                     continue;
             }
 
