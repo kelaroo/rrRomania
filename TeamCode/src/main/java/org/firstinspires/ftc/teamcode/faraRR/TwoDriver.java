@@ -174,7 +174,7 @@ public class TwoDriver extends OpMode {
                 telemetry.addData("Thread", String.format("Shoot %d", i));
                 hw.impins.setPosition(IMPINS_FWD);
                 timer.reset();
-                while(timer.milliseconds() < 250)
+                while(timer.milliseconds() < 250s)
                     continue;
 
                 hw.impins.setPosition(IMPINS_BWD);
