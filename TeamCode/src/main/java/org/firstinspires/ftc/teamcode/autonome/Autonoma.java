@@ -61,7 +61,7 @@ public class Autonoma extends LinearOpMode {
                     .lineToConstantHeading(new Vector2d(3.0, -55.0))
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
-                    .lineToConstantHeading(new Vector2d(-40.5, -15.0))
+                    .lineToConstantHeading(new Vector2d(-40.5, -16.5))
                     .build();
             Trajectory trajA4 = drive.trajectoryBuilder(trajA3.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0))))
                     .lineToConstantHeading(new Vector2d(22.0, -45.0))
@@ -74,7 +74,7 @@ public class Autonoma extends LinearOpMode {
 
             drive.turn(Math.toRadians(-5.0));
 
-            shoot(); shoot(); shoot();
+            sleep(200); shoot(); shoot(); shoot();
             sisteme.lansat.setPower(0);
 
             drive.turn(Math.toRadians(95.0));
@@ -110,19 +110,19 @@ public class Autonoma extends LinearOpMode {
             Trajectory trajB1 = drive.trajectoryBuilder(startPose)
                     .splineToConstantHeading(new Vector2d(-32.0, -34.0), Math.toRadians(0.0))
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER+0.1);
+                        sisteme.lansat.setPower(LANSAT_POWER-0.054); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
-            Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-8.0))))
+            Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-7.5))))
                     .forward(13.0)
                     .build();
-            Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(8.0))))
+            Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(7.5))))
                     .lineToLinearHeading(new Pose2d(40.0, -53.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-40.0, -14.5, Math.toRadians(0.0)))
+                    .lineToLinearHeading(new Pose2d(-40.8, -19.1, Math.toRadians(0.0)))
                     .addTemporalMarker(0.5, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
                     .build();
             Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
@@ -134,21 +134,21 @@ public class Autonoma extends LinearOpMode {
 
             drive.followTrajectory(trajB1);
 
-            drive.turn(Math.toRadians(-8.0));
+            drive.turn(Math.toRadians(-7.5));
             sleep(500);
-            shoot(); shoot(); shoot();
+            shoot(); sleep(400); shoot(); sleep(400); shoot(); sisteme.lansat.setPower(LANSAT_POWER-0.076); // 0.065
             sisteme.cuva.setPosition(CUVA_JOS);
             intakeOn();
 
             drive.followTrajectory(trajB2);
 
             intakeOff();
-            sisteme.lansat.setPower(LANSAT_POWER-0.05);
+            sisteme.lansat.setPower(LANSAT_POWER-0.079);
             sisteme.cuva.setPosition(CUVA_SUS); sleep(800);
             shoot();
             sisteme.lansat.setPower(0);
 
-            drive.turn(Math.toRadians(8.0));
+            drive.turn(Math.toRadians(7.5));
 
             drive.followTrajectory(trajB3);
 
@@ -170,10 +170,13 @@ public class Autonoma extends LinearOpMode {
                 ;
 
         } else { // C
+            /*sisteme.bratOprit.setPosition(BRAT_OPRIT_EXT_AUTO);
+            sisteme.baraOprit.setPosition(BARA_OPRIT_EXT_AUTO);*/
+
             Trajectory trajC1 = myTrajectoryBuilder(startPose, 60, 60)
                     .splineToConstantHeading(new Vector2d(-28.0, -34.0), Math.toRadians(0.0))
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER+0.05);
+                        sisteme.lansat.setPower(LANSAT_POWER-0.015);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
@@ -206,7 +209,7 @@ public class Autonoma extends LinearOpMode {
                     .lineToConstantHeading(new Vector2d(-24.5, -19.7))
                     .build();
             Trajectory trajC51 = myTrajectoryBuilder(trajC5.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(183))), 60.0, 60.0)
-                    .back(8.5)
+                    .back(9.5)
                     .build();
             Trajectory trajC6 = myTrajectoryBuilder(trajC51.end(), 60.0, 60.0)
                     .lineToConstantHeading(new Vector2d(46.0, -75.0))
@@ -218,7 +221,7 @@ public class Autonoma extends LinearOpMode {
 
             drive.followTrajectory(trajC1);
             drive.turn(Math.toRadians(-7.0));
-            shoot();sleep(100);shoot();shoot();
+            shoot();sleep(200);shoot(); sleep(200); shoot();
             sisteme.cuva.setPosition(CUVA_JOS);
             intakeOn();
             sisteme.lansat.setPower(LANSAT_POWER-0.1);
@@ -242,13 +245,13 @@ public class Autonoma extends LinearOpMode {
             drive.turn(Math.toRadians(183));
             drive.followTrajectory(trajC51);
 
-            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(400);
+            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(350);
             sisteme.clawWobble.setPosition(CLAW_PRINS);
 
             drive.followTrajectory(trajC6);
             drive.turn(Math.toRadians(-180.0));
 
-            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(500);
+            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(450);
             sisteme.clawWobble.setPosition(CLAW_LASAT);
 
             drive.followTrajectory(trajC7);

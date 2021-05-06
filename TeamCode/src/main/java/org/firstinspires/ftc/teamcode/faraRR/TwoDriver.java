@@ -22,7 +22,11 @@ public class TwoDriver extends OpMode {
         SHOOTING, IDLE
     }
     volatile ShootState shootState = ShootState.IDLE;
-    volatile int nr = 0;
+
+    enum LansatState {
+        IDLE, SHOOTING, POWER_SHOT
+    }
+    LansatState lansatState = LansatState.IDLE;
 
     @Override
     public void init() {
@@ -110,12 +114,6 @@ public class TwoDriver extends OpMode {
             cuvaState = CuvaState.JOS;
         }
 
-        /*// Impins
-        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS)
-            hw.impins.setPosition(IMPINS_FWD);
-        else if(cuvaState == CuvaState.SUS)
-            hw.impins.setPosition(IMPINS_BWD);*/
-
         // Impins
         if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
             Thread tAutoShoot = new Thread(new OneButtonShoot());
@@ -132,11 +130,30 @@ public class TwoDriver extends OpMode {
         else if(shootState == ShootState.IDLE)
             hw.impins.setPosition(IMPINS_BWD);
 
+        /*// Lansat
         if(gamepad2.right_bumper) {
             hw.lansat.setPower(LANSAT_POWER);
+            lansatState = LansatState.SHOOTING;
         } else {
             hw.lansat.setPower(0);
-        }
+            lansatState = LansatState.IDLE;
+        }*/
+
+        // Lansat
+        // SWTICH VITEZA POWERSHOT BY CEI 2 TRAPPERI
+        if(gamepad2.right_bumper)
+            lansatState = LansatState.SHOOTING;
+        else if(gamepad2.b)
+            lansatState = LansatState.POWER_SHOT;
+        else
+            lansatState = LansatState.IDLE;
+
+        if(lansatState == LansatState.SHOOTING)
+            hw.lansat.setPower(LANSAT_POWER);
+        else if(lansatState == LansatState.POWER_SHOT)
+            hw.lansat.setPower(LANSAT_POWER_PS);
+        else
+            hw.lansat.setPower(0);
 
         // Wobble Arm
         if(gamepad2.dpad_up) {
