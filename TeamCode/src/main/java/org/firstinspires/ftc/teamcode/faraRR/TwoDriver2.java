@@ -4,6 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_BWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_SECOND;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig2.*;
 /*
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAD_EXT;
@@ -35,13 +40,17 @@ public class TwoDriver2 extends OpMode {
     enum CuvaState {
         SUS, JOS
     }
-    TwoDriver.CuvaState cuvaState = TwoDriver.CuvaState.SUS;
+    CuvaState cuvaState = CuvaState.SUS;
+
+    enum ImpinsState {
+        FWD, BWD, SECOND
+    }
+    ImpinsState impinsState = ImpinsState.BWD;
 
     enum ShootState {
         SHOOTING, IDLE
     }
-    volatile TwoDriver.ShootState shootState = TwoDriver.ShootState.IDLE;
-    volatile int nr = 0;
+    volatile ShootState shootState = ShootState.IDLE;
 
 
     @Override
@@ -89,32 +98,28 @@ public class TwoDriver2 extends OpMode {
 
         if(gamepad2.y) {
             hw.cuva.setPosition(CUVA_SUS);
+            cuvaState = CuvaState.SUS;
         } else if(gamepad2.a) {
-            hw.impins.setPosition(1);
             hw.cuva.setPosition(CUVA_JOS);
+            hw.impins.setPosition(IMPINS_SECOND);
+            cuvaState = CuvaState.JOS;
         }
 
-        /*// Impins
-        if(gamepad2.left_bumper)
-            hw.impins.setPosition(IMPINS_FWD);
-        else
-            hw.impins.setPosition(IMPINS_BWD);
-
-        if(gamepad2.right_bumper) {
-            hw.lansat.setPower(LANSAT_POWER);
-        } else {
-            hw.lansat.setPower(0);
-        }*/
-
-        if(gamepad2.left_bumper && cuvaState == TwoDriver.CuvaState.SUS && shootState == TwoDriver.ShootState.IDLE) {
-            Thread tAutoShoot = new Thread(new TwoDriver2.OneButtonShoot());
+        // Impins
+        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
+            Thread tAutoShoot = new Thread(new OneButtonShoot());
             tAutoShoot.start();
-
-        } else if(shootState == TwoDriver.ShootState.IDLE && cuvaState == TwoDriver.CuvaState.SUS) {
-
+        } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
             hw.impins.setPosition(IMPINS_BWD);
         }
 
+        // Impins manual
+        if(gamepad2.x && shootState == ShootState.IDLE)
+            hw.impins.setPosition(IMPINS_FWD);
+        else if(shootState == ShootState.IDLE)
+            hw.impins.setPosition(IMPINS_BWD);
+
+        // Lansat
         if(gamepad2.right_bumper) {
             hw.lansat.setPower(LANSAT_POWER);
         } else {
@@ -141,10 +146,10 @@ public class TwoDriver2 extends OpMode {
         public void run() {
             telemetry.addData("Thread", "started");
             ElapsedTime timer = new ElapsedTime();
-            shootState = TwoDriver.ShootState.SHOOTING;
+            shootState = ShootState.SHOOTING;
 
             for(int i = 1; i <= 3; i++) {
-                if(cuvaState == TwoDriver.CuvaState.JOS)
+                if(cuvaState == CuvaState.JOS)
                     break;
 
                 telemetry.addData("Thread", String.format("Shoot %d", i));
@@ -159,7 +164,7 @@ public class TwoDriver2 extends OpMode {
                     ;
             }
 
-            shootState = TwoDriver.ShootState.IDLE;
+            shootState = ShootState.IDLE;
             telemetry.update();
         }
     }

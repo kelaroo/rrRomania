@@ -58,7 +58,7 @@ public class Autonoma extends LinearOpMode {
                     })
                     .build();
             Trajectory trajA2 = drive.trajectoryBuilder(trajA1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0))))
-                    .lineToConstantHeading(new Vector2d(3.0, -55.0))
+                    .lineToConstantHeading(new Vector2d(7.0, -55.0))
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
                     .lineToConstantHeading(new Vector2d(-40.5, -16.5))

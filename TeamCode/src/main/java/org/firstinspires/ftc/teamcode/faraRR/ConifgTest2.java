@@ -5,14 +5,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig2.*;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.faraRR.chassis.Robot2;
+
 @TeleOp
 public class ConifgTest2 extends OpMode {
 
-    HardwareConfig2 hw;
+    Robot2 hw;
 
     @Override
     public void init() {
-        hw = new HardwareConfig2(hardwareMap);
+        hw = new Robot2(hardwareMap);
     }
 
     @Override

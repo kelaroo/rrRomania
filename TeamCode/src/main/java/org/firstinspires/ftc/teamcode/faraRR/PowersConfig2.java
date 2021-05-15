@@ -22,6 +22,7 @@ public class PowersConfig2 {
 
     public static final double IMPINS_FWD = 0.55;
     public static final double IMPINS_BWD = 0.75;
+    public static final double IMPINS_SECOND = 0.83;
 
     public static final double BRAT_SUS = 0.2;
     public static final double BRAT_JOS = 1;
