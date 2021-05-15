@@ -110,7 +110,6 @@ public class TwoDriver extends OpMode {
             cuvaState = CuvaState.SUS;
         } else if(gamepad2.a) {
             hw.cuva.setPosition(CUVA_JOS);
-            hw.impins.setPosition(IMPINS_SECOND);
             cuvaState = CuvaState.JOS;
         }
 
@@ -118,17 +117,14 @@ public class TwoDriver extends OpMode {
         if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
             Thread tAutoShoot = new Thread(new OneButtonShoot());
             tAutoShoot.start();
-
         } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
-
-            hw.impins.setPosition(IMPINS_BWD);
+            if(gamepad2.x)
+                hw.impins.setPosition(IMPINS_FWD);
+            else
+                hw.impins.setPosition(IMPINS_BWD);
+        } else if(shootState == ShootState.IDLE){
+            hw.impins.setPosition(IMPINS_SECOND);
         }
-
-        // Impins manual
-        if(gamepad2.x && shootState == ShootState.IDLE)
-            hw.impins.setPosition(IMPINS_FWD);
-        else if(shootState == ShootState.IDLE)
-            hw.impins.setPosition(IMPINS_BWD);
 
         /*// Lansat
         if(gamepad2.right_bumper) {

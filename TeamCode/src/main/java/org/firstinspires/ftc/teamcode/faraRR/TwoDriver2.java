@@ -96,7 +96,6 @@ public class TwoDriver2 extends OpMode {
             cuvaState = CuvaState.SUS;
         } else if(gamepad2.a) {
             hw.cuva.setPosition(CUVA_JOS);
-            hw.impins.setPosition(IMPINS_SECOND);
             cuvaState = CuvaState.JOS;
         }
 
@@ -105,11 +104,10 @@ public class TwoDriver2 extends OpMode {
             Thread tAutoShoot = new Thread(new OneButtonShoot());
             tAutoShoot.start();
         } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
-            if(gamepad2.x){
+            if(gamepad2.x)
                 hw.impins.setPosition(IMPINS_FWD);
-            } else {
+            else
                 hw.impins.setPosition(IMPINS_BWD);
-            }
         } else if(shootState == ShootState.IDLE){
             hw.impins.setPosition(IMPINS_SECOND);
         }
