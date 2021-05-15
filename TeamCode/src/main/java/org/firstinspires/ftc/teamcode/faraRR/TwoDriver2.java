@@ -42,11 +42,6 @@ public class TwoDriver2 extends OpMode {
     }
     CuvaState cuvaState = CuvaState.SUS;
 
-    enum ImpinsState {
-        FWD, BWD, SECOND
-    }
-    ImpinsState impinsState = ImpinsState.BWD;
-
     enum ShootState {
         SHOOTING, IDLE
     }
@@ -110,14 +105,14 @@ public class TwoDriver2 extends OpMode {
             Thread tAutoShoot = new Thread(new OneButtonShoot());
             tAutoShoot.start();
         } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
-            hw.impins.setPosition(IMPINS_BWD);
+            if(gamepad2.x){
+                hw.impins.setPosition(IMPINS_FWD);
+            } else {
+                hw.impins.setPosition(IMPINS_BWD);
+            }
+        } else if(shootState == ShootState.IDLE){
+            hw.impins.setPosition(IMPINS_SECOND);
         }
-
-        // Impins manual
-        if(gamepad2.x && shootState == ShootState.IDLE)
-            hw.impins.setPosition(IMPINS_FWD);
-        else if(shootState == ShootState.IDLE)
-            hw.impins.setPosition(IMPINS_BWD);
 
         // Lansat
         if(gamepad2.right_bumper) {
