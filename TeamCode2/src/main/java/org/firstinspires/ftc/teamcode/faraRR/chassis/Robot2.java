@@ -26,6 +26,6 @@ public class Robot2 {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        //leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

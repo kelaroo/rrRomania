@@ -1,2 +1,4 @@
+include ':TeamCode3'
 include ':FtcRobotController'
 include ':TeamCode'
+project(':TeamCode3').projectDir = new File(rootDir, 'TeamCode2/')

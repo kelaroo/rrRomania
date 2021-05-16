@@ -12,7 +12,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig2.*;
 
 import org.apache.commons.math3.analysis.solvers.BracketedRealFieldUnivariateSolver;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class Autonoma extends LinearOpMode {
-    Camera camera;
+    //Camera camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;
 
@@ -35,16 +35,16 @@ public class Autonoma extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        camera = new Camera(hardwareMap);
+        //camera = new Camera(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
         sisteme = new RRHardwareConfig(hardwareMap);
 
         drive.setPoseEstimate(startPose);
 
-        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
+        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.RingsNumber.ONE; //Camera.RingsDetectionPipeline.getNumberOfRings();
 
         while(!isStarted()) {
-            ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
+            //ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
             telemetry.addData("ringsNumber", ringsNumber);
             telemetry.update();
         }
