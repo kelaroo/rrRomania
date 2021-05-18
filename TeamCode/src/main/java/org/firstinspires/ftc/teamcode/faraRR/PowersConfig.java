@@ -7,8 +7,9 @@ public class PowersConfig {
 
     public static final double INTAKE_SUCK = 0.75;
 
-    public static final double LANSAT_POWER = 0.65; //0.62;
+    public static final double LANSAT_POWER = 0.675; //0.62;
     public static final double LANSAT_POWER_PS = 0.575;
+    public static final double LANSAT_POWER_AUTO = 0.65;
 
     public static final double INTAKE2_RIGHT = 1;
     public static final double INTAKE2_LEFT = 0;
@@ -18,8 +19,8 @@ public class PowersConfig {
     public static final double INTAKE3_LEFT = 0;
     public static final double INTAKE3_STATIONARY = 0.5;
 
-    public static final double CUVA_SUS = 0.35;
-    public static final double CUVA_JOS = 0.62;
+    public static final double CUVA_SUS = 0.3515;
+    public static final double CUVA_JOS = 0.61;
 
     public static final double IMPINS_FWD = 0; // 0
     public static final double IMPINS_SECOND = 0.37; // 0.3
@@ -39,6 +40,6 @@ public class PowersConfig {
     public static final double BRAT_OPRIT_EXT = 0.96;
     public static final double BRAT_OPRIT_EXT_AUTO = 0.91;
     public static final double BARA_OPRIT_INT = 0.65;
-    public static final double BARA_OPRIT_EXT = 0.07;
+    public static final double BARA_OPRIT_EXT = 0;
     public static final double BARA_OPRIT_EXT_AUTO = 0.25;
 }

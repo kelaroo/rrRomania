@@ -53,7 +53,7 @@ public class Autonoma extends LinearOpMode {
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)
                     .forward(60.0)
                     .addTemporalMarker(0.7, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER-0.02);
+                        sisteme.lansat.setPower(LANSAT_POWER_AUTO-0.02);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
@@ -110,7 +110,7 @@ public class Autonoma extends LinearOpMode {
             Trajectory trajB1 = drive.trajectoryBuilder(startPose)
                     .splineToConstantHeading(new Vector2d(-32.0, -34.0), Math.toRadians(0.0))
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER+0.04); // 0.023
+                        sisteme.lansat.setPower(LANSAT_POWER_AUTO-0.02); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
@@ -122,7 +122,7 @@ public class Autonoma extends LinearOpMode {
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-41.0, -18.5, Math.toRadians(0.0)))
+                    .lineToLinearHeading(new Pose2d(-43.5, -19.0, Math.toRadians(0.0)))
                     .addTemporalMarker(0.5, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
                     .build();
             Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
@@ -136,14 +136,15 @@ public class Autonoma extends LinearOpMode {
 
             drive.turn(Math.toRadians(-7.5));
             sleep(500);
-            shoot(); sleep(400); shoot(); sleep(400); shoot(); sisteme.lansat.setPower(LANSAT_POWER+0.04); // 0.065
+            shoot(); sleep(400); shoot(); sleep(400); shoot(); sisteme.lansat.setPower(LANSAT_POWER_AUTO+0.04); // 0.065
             sisteme.cuva.setPosition(CUVA_JOS);
             intakeOn();
 
             drive.followTrajectory(trajB2);
 
+            sleep(800);
             intakeOff();
-            sisteme.lansat.setPower(LANSAT_POWER+0.04);
+            sisteme.lansat.setPower(LANSAT_POWER_AUTO+0.04);
             sisteme.cuva.setPosition(CUVA_SUS); sleep(800);
             shoot();
             sisteme.lansat.setPower(0);
@@ -176,12 +177,12 @@ public class Autonoma extends LinearOpMode {
             Trajectory trajC1 = myTrajectoryBuilder(startPose, 60, 60)
                     .splineToConstantHeading(new Vector2d(-28.0, -34.0), Math.toRadians(0.0))
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER);
+                        sisteme.lansat.setPower(LANSAT_POWER_AUTO);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
 
-            Trajectory trajC2 = myTrajectoryBuilder(trajC1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-0.0))), 30, 20)
+            Trajectory trajC2 = myTrajectoryBuilder(trajC1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-0.0))), 15, 10)
                     .forward(16)
                     .build();
 
@@ -209,7 +210,7 @@ public class Autonoma extends LinearOpMode {
                     .lineToConstantHeading(new Vector2d(-24.5, -19.7))
                     .build();
             Trajectory trajC51 = myTrajectoryBuilder(trajC5.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(183))), 60.0, 60.0)
-                    .back(17.0)
+                    .back(13.0)
                     .build();
             Trajectory trajC6 = myTrajectoryBuilder(trajC51.end(), 60.0, 60.0)
                     .lineToConstantHeading(new Vector2d(46.0, -75.0))
@@ -224,7 +225,7 @@ public class Autonoma extends LinearOpMode {
             shoot();sleep(200);shoot(); sleep(200); shoot();
             sisteme.cuva.setPosition(CUVA_JOS);
             intakeOn();
-            sisteme.lansat.setPower(LANSAT_POWER-0.1);
+            sisteme.lansat.setPower(LANSAT_POWER_AUTO-0.1);
 
             drive.turn(Math.toRadians(7.0));
 
