@@ -37,7 +37,7 @@ public class PowersConfig {
     public static final double CLAW_LASAT = 0.98; // 0.65 0.85
 
     public static final double BRAT_OPRIT_INT = 0.77;
-    public static final double BRAT_OPRIT_EXT = 0.96;
+    public static final double BRAT_OPRIT_EXT = 1;
     public static final double BRAT_OPRIT_EXT_AUTO = 0.91;
     public static final double BARA_OPRIT_INT = 0.65;
     public static final double BARA_OPRIT_EXT = 0;
