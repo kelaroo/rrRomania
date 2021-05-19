@@ -19,12 +19,6 @@ public class RRHardwareConfig {
     public DcMotor lansat;
     public Servo impins;
 
-    public Servo baraS;
-    public Servo baraD;
-
-    public Servo bratOprit; // ch 5
-    public Servo baraOprit; // eh 3
-
     public RRHardwareConfig(HardwareMap hw) {
         intake2 = hw.get(Servo.class, "intake2");
         bratWobble = hw.get(Servo.class, "bratWobble");
@@ -40,17 +34,11 @@ public class RRHardwareConfig {
         impins = hw.get(Servo.class, "impins");
         intake3 = hw.get(Servo.class, "intake3");
 
-        baraD = hw.get(Servo.class, "baraD");
-        baraS = hw.get(Servo.class, "baraS");
-
-        bratOprit = hw.get(Servo.class, "bratOprit");
-        baraOprit = hw.get(Servo.class, "baraOprit");
-
         // Servo init
         cuva.setPosition(CUVA_JOS);
         bratWobble.setPosition(BRAT_SUS);
         clawWobble.setPosition(CLAW_PRINS);
-        impins.setPosition(IMPINS_BWD);
+        impins.setPosition(IMPINS_SECOND);
 
         /*bratOprit.setPosition(BRAT_OPRIT_EXT_AUTO);
         baraOprit.setPosition(BARA_OPRIT_EXT_AUTO);*/

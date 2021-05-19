@@ -41,7 +41,7 @@ public class Autonoma extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.RingsNumber.ONE; //Camera.RingsDetectionPipeline.getNumberOfRings();
+        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.RingsNumber.NONE; //Camera.RingsDetectionPipeline.getNumberOfRings();
 
         while(!isStarted()) {
             //ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
@@ -53,7 +53,7 @@ public class Autonoma extends LinearOpMode {
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)
                     .forward(60.0)
                     .addTemporalMarker(0.7, ()->{
-                        sisteme.lansat.setPower(LANSAT_POWER-0.02);
+                        sisteme.lansat.setPower(LANSAT_POWER-0.06);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
@@ -61,7 +61,7 @@ public class Autonoma extends LinearOpMode {
                     .lineToConstantHeading(new Vector2d(13.0, -55.0))
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
-                    .lineToConstantHeading(new Vector2d(-39.0, -17.0))
+                    .lineToConstantHeading(new Vector2d(-36.5, -28.2))
                     .build();
             Trajectory trajA4 = drive.trajectoryBuilder(trajA3.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0))))
                     .lineToConstantHeading(new Vector2d(22.0, -45.0))
@@ -101,6 +101,7 @@ public class Autonoma extends LinearOpMode {
             drive.followTrajectory(trajA5);
 
             sisteme.bratWobble.setPosition(BRAT_SUS);
+            sisteme.impins.setPosition(IMPINS_SECOND);
             sisteme.cuva.setPosition(CUVA_JOS);
 
             while(opModeIsActive())
