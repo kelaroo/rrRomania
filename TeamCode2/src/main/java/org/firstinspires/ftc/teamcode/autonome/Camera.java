@@ -37,7 +37,7 @@ public class Camera {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
         });
 
@@ -57,7 +57,7 @@ public class Camera {
 
         @Override
         public Mat processFrame(Mat input) {
-            Rect cropRect = new Rect(105, 35, 100, 100);
+            Rect cropRect = new Rect(88, 146, 81, 65);
 
             input = input.submat(cropRect);
             Mat filtered = input.clone();
@@ -74,7 +74,7 @@ public class Camera {
             dilateElement = null;
 
             nrPixels = Core.countNonZero(filtered);
-            if(nrPixels >= 3000) {
+            if(nrPixels >= 1900) {
                 ringsNumber = RingsDetectionPipeline.RingsNumber.FOUR;
             } else if(nrPixels >= 800) {
                 ringsNumber = RingsDetectionPipeline.RingsNumber.ONE;

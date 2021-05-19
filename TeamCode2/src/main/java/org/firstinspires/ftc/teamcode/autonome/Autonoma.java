@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class Autonoma extends LinearOpMode {
-    //Camera camera;
+    Camera camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;
 
@@ -35,17 +35,18 @@ public class Autonoma extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        //camera = new Camera(hardwareMap);
+        camera = new Camera(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
         sisteme = new RRHardwareConfig(hardwareMap);
 
         drive.setPoseEstimate(startPose);
 
-        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.RingsNumber.NONE; //Camera.RingsDetectionPipeline.getNumberOfRings();
+        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
 
         while(!isStarted()) {
-            //ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
+            ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
             telemetry.addData("ringsNumber", ringsNumber);
+            telemetry.addData("nrPixels", Camera.RingsDetectionPipeline.nrPixels);
             telemetry.update();
         }
 
@@ -90,7 +91,7 @@ public class Autonoma extends LinearOpMode {
             drive.followTrajectory(trajA3);
 
             sisteme.bratWobble.setPosition(BRAT_JOS); sleep(1000);
-            sisteme.clawWobble.setPosition(CLAW_PRINS);
+            sisteme.clawWobble.setPosition(CLAW_PRINS); sleep(500);
 
             drive.turn(Math.toRadians(90.0));
 
@@ -119,15 +120,15 @@ public class Autonoma extends LinearOpMode {
                     .forward(13.0)
                     .build();
             Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(7.5))))
-                    .lineToLinearHeading(new Pose2d(40.0, -53.0, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(30.0, -43.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-43.0, -18.5, Math.toRadians(0.0)))
+                    .lineToLinearHeading(new Pose2d(-33.7, -30.0, Math.toRadians(0.0)))
                     .addTemporalMarker(0.5, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
                     .build();
             Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
-                    .lineToLinearHeading(new Pose2d(25.0, -53.5, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(25.0, -43.0, Math.toRadians(180.0)))
                     .build();
             Trajectory trajB6 = drive.trajectoryBuilder(trajB5.end())
                     .forward(10.0)
