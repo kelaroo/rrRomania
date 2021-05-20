@@ -23,6 +23,10 @@ public class TwoDriver2 extends OpMode {
     }
     volatile ShootState shootState = ShootState.IDLE;
 
+    enum LansatState {
+        IDLE, SHOOTING, POWER_SHOT
+    }
+    LansatState lansatState = LansatState.IDLE;
 
     @Override
     public void init() {
@@ -89,11 +93,20 @@ public class TwoDriver2 extends OpMode {
         }
 
         // Lansat
-        if(gamepad2.right_bumper) {
+        // SWTICH VITEZA POWERSHOT BY CEI 2 TRAPPERI
+        if(gamepad2.right_bumper)
+            lansatState = LansatState.SHOOTING;
+        else if(gamepad2.b)
+            lansatState = LansatState.POWER_SHOT;
+        else
+            lansatState = LansatState.IDLE;
+
+        if(lansatState == LansatState.SHOOTING)
             hw.lansat.setPower(LANSAT_POWER);
-        } else {
+        else if(lansatState == LansatState.POWER_SHOT)
+            hw.lansat.setPower(LANSAT_POWER_PS);
+        else
             hw.lansat.setPower(0);
-        }
 
         // Wobble Arm
         if(gamepad2.dpad_up) {

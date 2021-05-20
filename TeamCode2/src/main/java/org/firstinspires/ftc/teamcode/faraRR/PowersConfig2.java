@@ -7,7 +7,9 @@ public class PowersConfig2 {
 
     public static final double INTAKE_SUCK = 0.85;
 
-    public static final double LANSAT_POWER = 0.675;
+    public static final double LANSAT_POWER = 0.675; //0.62;
+    public static final double LANSAT_POWER_PS = 0.575;
+    public static final double LANSAT_POWER_AUTO = 0.65;
 
     public static final double INTAKE2_RIGHT = 1;
     public static final double INTAKE2_LEFT = 0;
