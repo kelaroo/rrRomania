@@ -62,7 +62,7 @@ public class Autonoma extends LinearOpMode {
                     .lineToConstantHeading(new Vector2d(13.0, -55.0))
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
-                    .lineToConstantHeading(new Vector2d(-36.5, -28.2))
+                    .lineToConstantHeading(new Vector2d(-34.0, -29.0))
                     .build();
             Trajectory trajA4 = drive.trajectoryBuilder(trajA3.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0))))
                     .lineToConstantHeading(new Vector2d(22.0, -45.0))
@@ -110,7 +110,8 @@ public class Autonoma extends LinearOpMode {
 
         } else if(ringsNumber == ONE) { // B
             Trajectory trajB1 = drive.trajectoryBuilder(startPose)
-                    .splineToConstantHeading(new Vector2d(-32.0, -34.0), Math.toRadians(0.0))
+                    .splineToConstantHeading(new Vector2d(-30.0, -47.0), 0.0)
+                    .splineToConstantHeading(new Vector2d(-32.0, -37.0), Math.toRadians(0.0))
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setPower(LANSAT_POWER-0.05); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
@@ -124,11 +125,11 @@ public class Autonoma extends LinearOpMode {
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-33.7, -30.0, Math.toRadians(0.0)))
+                    .lineToLinearHeading(new Pose2d(-34.0, -32.2, Math.toRadians(0.0)))
                     .addTemporalMarker(0.5, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
                     .build();
             Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
-                    .lineToLinearHeading(new Pose2d(25.0, -43.0, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(25.0, -46.0, Math.toRadians(180.0)))
                     .build();
             Trajectory trajB6 = drive.trajectoryBuilder(trajB5.end())
                     .forward(10.0)

@@ -4,12 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 @TeleOp
 public class TwoDriver extends OpMode {
 
     HardwareConfig hw;
+    SampleMecanumDrive drive;
 
     double coeff = COEFF_SPEED_HIGH;
 
@@ -28,9 +31,16 @@ public class TwoDriver extends OpMode {
     }
     LansatState lansatState = LansatState.IDLE;
 
+    enum RobotState {
+        DRIVER, POWERSHOTS
+    }
+    RobotState robotState = RobotState.DRIVER;
+    Thread tAutoPS = null;
+
     @Override
     public void init() {
         hw = new HardwareConfig(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
     }
 
     @Override
@@ -45,6 +55,16 @@ public class TwoDriver extends OpMode {
 
     @Override
     public void loop() {
+        drive.update();
+
+        if(robotState == RobotState.DRIVER && gamepad1.y && gamepad1.dpad_up) {
+            tAutoPS = new Thread(new AutoPowerShots());
+            robotState = RobotState.POWERSHOTS;
+            tAutoPS.start();
+        }
+
+        if(robotState != RobotState.DRIVER)
+            return;
 
         /// Driver 1
         double drive = -gamepad1.left_stick_y;
@@ -198,6 +218,57 @@ public class TwoDriver extends OpMode {
 
             shootState = ShootState.IDLE;
             telemetry.update();
+        }
+    }
+
+    private class AutoPowerShots implements Runnable {
+
+        @Override
+        public void run() {
+            telemetry.addData("AutoPowerShots", "started");
+
+            hw.cuva.setPosition(CUVA_SUS);
+            cuvaState = CuvaState.SUS;
+
+            robotState = RobotState.POWERSHOTS;
+
+            // Porneste motor
+            hw.lansat.setPower(LANSAT_POWER_PS);
+            waitTimer(2500);
+
+            shoot();
+            waitTimer(800);
+
+            drive.turn(Math.toRadians(6.0));
+            shoot();
+            hw.lansat.setPower(LANSAT_POWER_PS-0.03);
+            waitTimer(800);
+
+            drive.turn(Math.toRadians(-7.8));
+            shoot();
+
+            hw.lansat.setPower(0);
+            telemetry.update();
+            robotState = RobotState.DRIVER;
+        }
+
+        void waitTimer(int millis) {
+            ElapsedTime timer = new ElapsedTime();
+            while(timer.milliseconds() < millis)
+                ;
+        }
+
+        void shoot() {
+            ElapsedTime timer = new ElapsedTime();
+            hw.impins.setPosition(IMPINS_FWD);
+            timer.reset();
+            while(timer.milliseconds() < 250)
+                ;
+
+            hw.impins.setPosition(IMPINS_BWD);
+            timer.reset();
+            while(timer.milliseconds() < 250)
+                ;
         }
     }
 }
