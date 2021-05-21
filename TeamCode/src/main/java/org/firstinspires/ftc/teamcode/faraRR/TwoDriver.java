@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.faraRR;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
@@ -13,6 +16,8 @@ public class TwoDriver extends OpMode {
 
     HardwareConfig hw;
     SampleMecanumDrive drive;
+
+    Pose2d lastPose;
 
     double coeff = COEFF_SPEED_HIGH;
 
@@ -41,6 +46,14 @@ public class TwoDriver extends OpMode {
     public void init() {
         hw = new HardwareConfig(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
+        if(PoseStorage.autoEndPose == null)
+            telemetry.addData("Start pose", "null");
+        else {
+            drive.setPoseEstimate(PoseStorage.autoEndPose);
+            telemetry.addData("Start pose", "initialized");
+        }
+
+        lastPose = drive.getPoseEstimate();
     }
 
     @Override
@@ -55,12 +68,31 @@ public class TwoDriver extends OpMode {
 
     @Override
     public void loop() {
+        lastPose = drive.getPoseEstimate();
         drive.update();
 
+        Pose2d currPose = drive.getPoseEstimate();
+        /*if(currPose.getY() < -70.0 || currPose.getY() > 8.0
+                || currPose.getX() < -60.0 || currPose.getX() > 67.0)
+            drive.setPoseEstimate(lastPose);*/
+
+        telemetry.addData("x", drive.getPoseEstimate().getX());
+        telemetry.addData("y", drive.getPoseEstimate().getY());
+
+
         if(robotState == RobotState.DRIVER && gamepad1.y && gamepad1.dpad_up) {
-            tAutoPS = new Thread(new AutoPowerShots());
             robotState = RobotState.POWERSHOTS;
-            tAutoPS.start();
+
+            if(PoseStorage.autoEndPose == null)
+                telemetry.addData("Start pose", "not initialized");
+            else {
+                Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(new Pose2d(-8.0, -18.0, Math.toRadians(0.0)))
+                        .build();
+                drive.followTrajectory(traj);
+                tAutoPS = new Thread(new AutoPowerShots());
+                tAutoPS.start();
+            }
         }
 
         if(robotState != RobotState.DRIVER)
@@ -239,12 +271,13 @@ public class TwoDriver extends OpMode {
             shoot();
             waitTimer(800);
 
+            hw.lansat.setPower(LANSAT_POWER_PS-0.035);
             drive.turn(Math.toRadians(6.0));
             shoot();
-            hw.lansat.setPower(LANSAT_POWER_PS-0.03);
+            hw.lansat.setPower(LANSAT_POWER_PS-0.04);
             waitTimer(800);
 
-            drive.turn(Math.toRadians(-7.8));
+            drive.turn(Math.toRadians(-8.3));
             shoot();
 
             hw.lansat.setPower(0);

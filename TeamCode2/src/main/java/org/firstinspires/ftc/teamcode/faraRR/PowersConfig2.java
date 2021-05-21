@@ -7,7 +7,7 @@ public class PowersConfig2 {
 
     public static final double INTAKE_SUCK = 1; //0.85;
 
-    public static final double LANSAT_POWER = 0.675; //0.62;
+    public static final double LANSAT_POWER = 0.66; //0.62;
     public static final double LANSAT_POWER_PS = 0.575;
     public static final double LANSAT_POWER_AUTO = 0.65;
 
@@ -26,7 +26,7 @@ public class PowersConfig2 {
     public static final double IMPINS_BWD = 0.75;
     public static final double IMPINS_SECOND = 0.83;
 
-    public static final double BRAT_SUS = 0.2;
+    public static final double BRAT_SUS = 0.27;
     public static final double BRAT_JOS = 0.9;
     public static final double CLAW_PRINS = 0.325;
     public static final double CLAW_LASAT = 0.75;

@@ -22,7 +22,7 @@ import org.opencv.core.Mat;
 import java.util.Arrays;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class Autonoma extends LinearOpMode {
+public class Autonoma2 extends LinearOpMode {
     Camera camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;
@@ -110,14 +110,16 @@ public class Autonoma extends LinearOpMode {
 
         } else if(ringsNumber == ONE) { // B
             Trajectory trajB1 = drive.trajectoryBuilder(startPose)
-                    .splineToConstantHeading(new Vector2d(-30.0, -47.0), 0.0)
-                    .splineToConstantHeading(new Vector2d(-32.0, -37.0), Math.toRadians(0.0))
+                    .forward(22.0)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setPower(LANSAT_POWER-0.05); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
-            Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-7.5))))
+            Trajectory trajB12 = drive.trajectoryBuilder(trajB1.end())
+                    .strafeLeft(8.0)
+                    .build();
+            Trajectory trajB2 = drive.trajectoryBuilder(trajB12.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-7.5))))
                     .forward(13.0)
                     .build();
             Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(7.5))))
@@ -125,7 +127,7 @@ public class Autonoma extends LinearOpMode {
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-34.0, -32.2, Math.toRadians(0.0)))
+                    .lineToLinearHeading(new Pose2d(-34.0, -34.0, Math.toRadians(0.0)))
                     .addTemporalMarker(0.5, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
                     .build();
             Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
@@ -136,6 +138,8 @@ public class Autonoma extends LinearOpMode {
                     .build();
 
             drive.followTrajectory(trajB1);
+
+            drive.followTrajectory(trajB12);
 
             drive.turn(Math.toRadians(-7.5));
             sleep(500);

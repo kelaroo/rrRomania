@@ -46,10 +46,10 @@ public class TwoDriver2 extends OpMode {
         if(gamepad1.x)
             coeff = COEFF_SPEED_LOW;
 
-        double RF = hw.clipPower(drive + strafe - rotate) * coeff;
-        double RB = hw.clipPower(drive - strafe - rotate) * coeff;
-        double LB = hw.clipPower(drive + strafe + rotate) * coeff;
-        double LF = hw.clipPower(drive - strafe + rotate) * coeff;
+        double RF = hw.clipPower(drive - strafe - rotate) * coeff;
+        double RB = hw.clipPower(drive + strafe - rotate) * coeff;
+        double LB = hw.clipPower(drive - strafe + rotate) * coeff;
+        double LF = hw.clipPower(drive + strafe + rotate) * coeff;
 
         hw.leftFront.setPower(LF);
         hw.leftBack.setPower(LB);
@@ -88,7 +88,7 @@ public class TwoDriver2 extends OpMode {
                 hw.impins.setPosition(IMPINS_FWD);
             else
                 hw.impins.setPosition(IMPINS_BWD);
-        } else if(shootState == ShootState.IDLE){
+        } else if(shootState == ShootState.IDLE) {
             hw.impins.setPosition(IMPINS_SECOND);
         }
 
@@ -110,6 +110,8 @@ public class TwoDriver2 extends OpMode {
 
         // Wobble Arm
         if(gamepad2.dpad_up) {
+            cuvaState = CuvaState.JOS;
+            hw.cuva.setPosition(CUVA_JOS);
             hw.bratWobble.setPosition(BRAT_SUS);
         } else if(gamepad2.dpad_down) {
             hw.bratWobble.setPosition(BRAT_JOS);
