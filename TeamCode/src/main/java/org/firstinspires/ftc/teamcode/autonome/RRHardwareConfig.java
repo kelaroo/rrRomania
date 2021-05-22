@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonome;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -18,7 +19,7 @@ public class RRHardwareConfig {
     public Servo clawWobble;
 
     public Servo cuva;
-    public DcMotor lansat;
+    public DcMotorEx lansat;
     public Servo impins;
 
     public Servo baraS;
@@ -35,8 +36,9 @@ public class RRHardwareConfig {
         intake = hw.get(DcMotor.class, "odoRight");
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        lansat = hw.get(DcMotor.class, "odoCenter");
-        lansat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lansat = hw.get(DcMotorEx.class, "odoCenter");
+        lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");

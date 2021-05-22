@@ -1,16 +1,25 @@
 package org.firstinspires.ftc.teamcode.faraRR;
 
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
 public class PowersConfig {
 
     public static final double COEFF_SPEED_HIGH = 0.8;
     public static final double COEFF_SPEED_LOW = 0.5;
+    public static final double COEFF_ROTATE = 0.7;
 
     public static final double INTAKE_SUCK = 0.75;
 
+    public static final PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 13.45);
     public static final double LANSAT_POWER = 0.675; //0.62;
     public static final double LANSAT_POWER_PS = 0.575;
     public static final double LANSAT_POWER_AUTO = 0.65;
-    public static final double LANSAT_SPEED = 1400;
+    public static final double LANSAT_SPEED = 1450;
+    public static final double LANSAT_SPEED_PS = 1200;
+
+    public static final double LANSAT_AUTO_PS = 1425;
+    public static final double LANSAT_AUTO_B1 = 1435;
+    public static final double LANSAT_AUTO_B2 = 1410;
 
     public static final double INTAKE2_RIGHT = 1;
     public static final double INTAKE2_LEFT = 0;

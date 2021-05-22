@@ -38,8 +38,6 @@ public class HardwareConfig {
     public Servo baraD;
 
 
-    private PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 13.45);
-
     public HardwareConfig(HardwareMap hw) {
         /// Control Hub
         rightFront = hw.get(DcMotor.class, "right_front");
@@ -67,7 +65,6 @@ public class HardwareConfig {
         lansat = hw.get(DcMotorEx.class, "odoCenter");
         lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
-        //lansat.setDirection(DcMotorSimple.Direction.REVERSE);
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
