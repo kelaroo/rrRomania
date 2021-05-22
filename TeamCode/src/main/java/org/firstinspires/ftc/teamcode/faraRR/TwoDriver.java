@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
@@ -40,10 +41,13 @@ public class TwoDriver extends OpMode {
     LansatState lansatState = LansatState.IDLE;
 
     enum RobotState {
-        DRIVER, POWERSHOTS
+        DRIVER, POWERSHOTS, MOVE_TO
     }
     RobotState robotState = RobotState.DRIVER;
     Thread tAutoPS = null;
+
+    boolean brateState = false;
+    boolean baraFataState = false;
 
     @Override
     public void init() {
@@ -64,6 +68,7 @@ public class TwoDriver extends OpMode {
         super.start();
         hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
         hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+        baraFataState = true;
 
         hw.cuva.setPosition(CUVA_JOS);
         cuvaState = CuvaState.JOS;
@@ -78,31 +83,23 @@ public class TwoDriver extends OpMode {
         lastPose = drive.getPoseEstimate();
         drive.update();
 
-        Pose2d currPose = drive.getPoseEstimate();
-        /*if(currPose.getY() < -70.0 || currPose.getY() > 8.0
-                || currPose.getX() < -60.0 || currPose.getX() > 67.0)
-            drive.setPoseEstimate(lastPose);*/
-
-        telemetry.addData("x", drive.getPoseEstimate().getX());
-        telemetry.addData("y", drive.getPoseEstimate().getY());
-
-
-        if(robotState == RobotState.DRIVER && gamepad1.y && gamepad1.dpad_up) {
-            robotState = RobotState.POWERSHOTS;
-
-            if(PoseStorage.autoEndPose == null)
-                telemetry.addData("Start pose", "not initialized");
-            else {
-                Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
-                        .lineToLinearHeading(new Pose2d(-8.0, -18.0, Math.toRadians(0.0)))
-                        .build();
-                drive.followTrajectory(traj);
+        if(robotState == RobotState.DRIVER) {
+            if(gamepad1.dpad_up && gamepad1.y) {
+                robotState = RobotState.POWERSHOTS;
                 tAutoPS = new Thread(new AutoPowerShots());
                 tAutoPS.start();
-            }
-        }
+            } else if(gamepad1.dpad_right && gamepad1.b)
+                if(PoseStorage.autoEndPose != null) {
+                    robotState = RobotState.MOVE_TO;
 
-        if(robotState != RobotState.DRIVER)
+                    Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
+                            .lineToLinearHeading(new Pose2d(-8.0, -18.0, Math.toRadians(0.0)))
+                            .build();
+                    drive.followTrajectory(traj);
+
+                    robotState = RobotState.DRIVER;
+                }
+        } else
             return;
 
         /// Driver 1
@@ -115,13 +112,22 @@ public class TwoDriver extends OpMode {
         if(gamepad1.x)
             coeff = COEFF_SPEED_LOW;
 
-        // Brate
-        if(gamepad1.left_trigger > 0.2) {
-            hw.baraD.setPosition(BARAD_INT);
-            hw.baraS.setPosition(BARAS_INT);
-        } else if(gamepad1.right_trigger > 0.2) {
-            hw.baraD.setPosition(BARAD_EXT);
+        // Brate + Bara Oprit
+        if(gamepad1.left_trigger > 0.2)
+            brateState = !brateState;
+        if(gamepad1.right_trigger > 0.2)
+            baraFataState = !baraFataState;
+
+        if(brateState)
             hw.baraS.setPosition(BARAS_EXT);
+        else
+            hw.baraS.setPosition(BARAS_INT);
+        if(baraFataState) {
+            hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+            hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
+        } else {
+            hw.baraOprit.setPosition(BARA_OPRIT_INT);
+            hw.bratOprit.setPosition(BRAT_OPRIT_INT);
         }
 
         double RF = hw.clipPower(drive - strafe - rotate) * coeff;
@@ -215,15 +221,6 @@ public class TwoDriver extends OpMode {
         } else if(gamepad2.dpad_left) {
             hw.clawWobble.setPosition(CLAW_LASAT);
         }
-
-        // Bara oprit
-        if(gamepad1.left_stick_button) {
-            hw.baraOprit.setPosition(BARA_OPRIT_EXT);
-            hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
-        } else if(gamepad1.right_stick_button) {
-            hw.baraOprit.setPosition(BARA_OPRIT_INT);
-            hw.bratOprit.setPosition(BRAT_OPRIT_INT);
-        }
     }
 
     private class OneButtonShoot implements Runnable {
@@ -240,7 +237,7 @@ public class TwoDriver extends OpMode {
                 timer.reset();
                 while(timer.milliseconds() < 250)
                     continue;
-                
+
                 lansatHistory[i] = hw.lansat.getVelocity();
                 hw.impins.setPosition(IMPINS_BWD);
                 timer.reset();
