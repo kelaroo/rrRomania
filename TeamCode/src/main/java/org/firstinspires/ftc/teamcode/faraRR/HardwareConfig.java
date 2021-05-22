@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.faraRR;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Arrays;
@@ -24,7 +26,7 @@ public class HardwareConfig {
 
     // Expansion Hub
     public DcMotor intake;
-    public DcMotor lansat;
+    public DcMotorEx lansat;
 
     public Servo cuva;
     public Servo impins;
@@ -34,6 +36,9 @@ public class HardwareConfig {
 
     public Servo baraS;
     public Servo baraD;
+
+
+    private PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 13.45);
 
     public HardwareConfig(HardwareMap hw) {
         /// Control Hub
@@ -59,8 +64,9 @@ public class HardwareConfig {
         intake = hw.get(DcMotor.class, "odoRight");
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        lansat = hw.get(DcMotor.class, "odoCenter");
-        lansat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lansat = hw.get(DcMotorEx.class, "odoCenter");
+        lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
         //lansat.setDirection(DcMotorSimple.Direction.REVERSE);
 
         cuva = hw.get(Servo.class, "cuva");

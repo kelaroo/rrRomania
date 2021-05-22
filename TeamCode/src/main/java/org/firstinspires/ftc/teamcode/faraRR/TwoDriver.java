@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
@@ -18,6 +19,8 @@ public class TwoDriver extends OpMode {
     SampleMecanumDrive drive;
 
     Pose2d lastPose;
+
+    Double[] lansatHistory = new Double[]{-1.0, -1.0, -1.0};
 
     double coeff = COEFF_SPEED_HIGH;
 
@@ -68,6 +71,10 @@ public class TwoDriver extends OpMode {
 
     @Override
     public void loop() {
+        telemetry.addData("Lansat speed", hw.lansat.getVelocity());
+        for(int i = 0 ; i < 3; i++)
+            telemetry.addData(String.format("Lansat %d", i), lansatHistory[i]);
+
         lastPose = drive.getPoseEstimate();
         drive.update();
 
@@ -178,15 +185,6 @@ public class TwoDriver extends OpMode {
             hw.impins.setPosition(IMPINS_SECOND);
         }
 
-        /*// Lansat
-        if(gamepad2.right_bumper) {
-            hw.lansat.setPower(LANSAT_POWER);
-            lansatState = LansatState.SHOOTING;
-        } else {
-            hw.lansat.setPower(0);
-            lansatState = LansatState.IDLE;
-        }*/
-
         // Lansat
         // SWTICH VITEZA POWERSHOT BY CEI 2 TRAPPERI
         if(gamepad2.right_bumper)
@@ -197,7 +195,8 @@ public class TwoDriver extends OpMode {
             lansatState = LansatState.IDLE;
 
         if(lansatState == LansatState.SHOOTING)
-            hw.lansat.setPower(LANSAT_POWER);
+            //hw.lansat.setPower(LANSAT_POWER);
+            hw.lansat.setVelocity(LANSAT_SPEED);
         else if(lansatState == LansatState.POWER_SHOT)
             hw.lansat.setPower(LANSAT_POWER_PS);
         else
@@ -218,10 +217,10 @@ public class TwoDriver extends OpMode {
         }
 
         // Bara oprit
-        if(gamepad2.left_stick_button) {
+        if(gamepad1.left_stick_button) {
             hw.baraOprit.setPosition(BARA_OPRIT_EXT);
             hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
-        } else if(gamepad2.right_stick_button) {
+        } else if(gamepad1.right_stick_button) {
             hw.baraOprit.setPosition(BARA_OPRIT_INT);
             hw.bratOprit.setPosition(BRAT_OPRIT_INT);
         }
@@ -235,13 +234,14 @@ public class TwoDriver extends OpMode {
             ElapsedTime timer = new ElapsedTime();
             shootState = ShootState.SHOOTING;
 
-            for(int i = 1; i <= 3 && cuvaState == CuvaState.SUS; i++) {
+            for(int i = 0; i < 3 && cuvaState == CuvaState.SUS; i++) {
                 telemetry.addData("Thread", String.format("Shoot %d", i));
                 hw.impins.setPosition(IMPINS_FWD);
                 timer.reset();
                 while(timer.milliseconds() < 250)
                     continue;
-
+                
+                lansatHistory[i] = hw.lansat.getVelocity();
                 hw.impins.setPosition(IMPINS_BWD);
                 timer.reset();
                 while(timer.milliseconds() < 250)
@@ -249,7 +249,7 @@ public class TwoDriver extends OpMode {
             }
 
             shootState = ShootState.IDLE;
-            telemetry.update();
+            //telemetry.update();
         }
     }
 
