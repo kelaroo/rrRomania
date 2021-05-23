@@ -17,7 +17,7 @@ public class PowersConfig {
     public static final double LANSAT_SPEED = 1450;
     public static final double LANSAT_SPEED_PS = 1200;
 
-    public static final double LANSAT_AUTO_PS = 1425;
+    public static final double LANSAT_AUTO_PS = 1415; //1425
     public static final double LANSAT_AUTO_B1 = 1435;
     public static final double LANSAT_AUTO_B2 = 1410;
 
@@ -30,7 +30,7 @@ public class PowersConfig {
     public static final double INTAKE3_STATIONARY = 0.5;
 
     public static final double CUVA_SUS = 0.3515;
-    public static final double CUVA_JOS = 0.61;
+    public static final double CUVA_JOS = 0.62;
 
     public static final double IMPINS_FWD = 0; // 0
     public static final double IMPINS_SECOND = 0.37; // 0.3

@@ -39,7 +39,7 @@ public class AutonomaNebuna extends LinearOpMode {
 
         sisteme.lansat.setVelocity(LANSAT_AUTO_PS);
         drive.followTrajectory(traj1);
-        sleep(1500);
+        sleep(2000);
         shoot();
 
         drive.turn(Math.toRadians(4.5));
