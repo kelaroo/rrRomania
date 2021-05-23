@@ -15,9 +15,7 @@ public class PowersConfig2 {
     public static final double INTAKE2_LEFT = 0;
     public static final double INTAKE2_STATIONARY = 0.5;
 
-    public static final double INTAKE3_RIGHT = 1;
-    public static final double INTAKE3_LEFT = 0;
-    public static final double INTAKE3_STATIONARY = 0.5;
+    public static final double INTAKE3_SUCK = 1;
 
     public static final double CUVA_SUS = 0.4;
     public static final double CUVA_JOS = 0.68;

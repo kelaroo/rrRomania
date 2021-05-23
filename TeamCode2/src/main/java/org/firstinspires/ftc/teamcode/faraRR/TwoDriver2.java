@@ -60,15 +60,15 @@ public class TwoDriver2 extends OpMode {
         if(gamepad2.left_trigger > 0.2) {
             hw.intake.setPower(INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_RIGHT);
-            hw.intake3.setPosition(INTAKE3_RIGHT);
+            hw.intake3.setPower(INTAKE3_SUCK);
         } else if(gamepad2.right_trigger > 0.2) {
             hw.intake.setPower(-INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_LEFT);
-            hw.intake3.setPosition(INTAKE3_LEFT);
+            hw.intake3.setPower(-INTAKE3_SUCK);
         } else {
             hw.intake.setPower(0);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
-            hw.intake3.setPosition(INTAKE3_STATIONARY);
+            hw.intake3.setPower(0   );
         }
 
         if(gamepad2.y) {
