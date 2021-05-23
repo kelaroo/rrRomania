@@ -280,13 +280,13 @@ public class Autonoma2 extends LinearOpMode {
     void intakeOn() {
         sisteme.intake.setPower(INTAKE_SUCK);
         sisteme.intake2.setPosition(INTAKE2_RIGHT);
-        sisteme.intake3.setPosition(INTAKE3_RIGHT);
+        sisteme.intake3.setPosition(INTAKE3_SUCK);
     }
 
     void intakeOff() {
         sisteme.intake.setPower(0);
         sisteme.intake2.setPosition(INTAKE2_STATIONARY);
-        sisteme.intake3.setPosition(INTAKE3_STATIONARY);
+        sisteme.intake3.setPosition(0);
     }
 
     public TrajectoryBuilder myTrajectoryBuilder(Pose2d startPose, double maxVelo, double maxAccel){

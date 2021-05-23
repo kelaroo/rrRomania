@@ -23,7 +23,8 @@ public class HardwareConfig2 {
 
     public Servo cuva; // eh 1
     public Servo impins; // ch 1
-    public Servo intake3; // eh 0
+    //public Servo intake3; // eh 0
+    public DcMotor intake3;
 
     public Servo bratWobble; // eh 2
     public Servo clawWobble; // eh 3
@@ -56,7 +57,8 @@ public class HardwareConfig2 {
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
-        intake3 = hw.get(Servo.class, "intake3");
+        intake3 = hw.get(DcMotor.class, "intake3");
+        intake3.setDirection(DcMotorSimple.Direction.REVERSE);
 
         bratWobble = hw.get(Servo.class, "bratWobble");
         clawWobble = hw.get(Servo.class, "clawWobble");
