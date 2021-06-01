@@ -104,7 +104,7 @@ public class CameraDebug extends LinearOpMode {
                 return input;
             } else {
 
-                Rect cropRect = new Rect(88, 146, 81, 65);
+                Rect cropRect = new Rect(cursorX, cursorY, width, height);
 
                 input = input.submat(cropRect);
                 Mat filtered = input.clone();

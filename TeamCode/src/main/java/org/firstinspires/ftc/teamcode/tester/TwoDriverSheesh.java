@@ -1,20 +1,46 @@
-package org.firstinspires.ftc.teamcode.faraRR;
+package org.firstinspires.ftc.teamcode.tester;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.faraRR.HardwareConfig;
 
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAS_EXT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAS_INT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARA_OPRIT_EXT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARA_OPRIT_INT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_OPRIT_EXT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_OPRIT_INT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_LASAT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_PRINS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.COEFF_ROTATE;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.COEFF_SPEED_HIGH;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.COEFF_SPEED_LOW;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_BWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_SECOND;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_LEFT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_RIGHT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATIONARY;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_LEFT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_RIGHT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_STATIONARY;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE_SUCK;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS;
 
 @TeleOp
-public class TwoDriver extends OpMode {
+public class TwoDriverSheesh extends OpMode {
 
     HardwareConfig hw;
     SampleMecanumDrive drive;
@@ -46,6 +72,12 @@ public class TwoDriver extends OpMode {
     RobotState robotState = RobotState.DRIVER;
     Thread tAutoPS = null;
 
+    boolean sheeshFound = false;
+    int sheeshSoundID;
+
+    SoundManager soundManager;
+    ElapsedTime oosCD = null;
+
     @Override
     public void init() {
         hw = new HardwareConfig(hardwareMap);
@@ -58,7 +90,21 @@ public class TwoDriver extends OpMode {
         }
 
         //lastPose = drive.getPoseEstimate();
+
+        soundManager = new SoundManager(hardwareMap);
+
+        if(!soundManager.addFile("sheesh1"))
+            telemetry.addData("sheesh1", "Not found (add sheesh1 to src/res/raw)");
+        if(!soundManager.addFile("sheesh2"))
+            telemetry.addData("sheesh3", "Not found (add sheesh2 to src/res/raw)");
+        if(!soundManager.addFile("sheesh3"))
+            telemetry.addData("sheesh3", "Not found (add sheesh3 to src/res/raw)");
+        if(!soundManager.addFile("oos"))
+            telemetry.addData("oos", "Not found (add oos to src/res/raw)");
+
+        telemetry.addData("sheesh sound resource", sheeshFound? "Found": "Can't find\n Add sheesh.wav to /src/main/res/raw");
     }
+
 
     @Override
     public void start() {
@@ -68,6 +114,8 @@ public class TwoDriver extends OpMode {
 
         hw.cuva.setPosition(CUVA_JOS);
         cuvaState = CuvaState.JOS;
+
+
     }
 
     @Override
@@ -210,6 +258,10 @@ public class TwoDriver extends OpMode {
             hw.clawWobble.setPosition(CLAW_PRINS);
         } else if(gamepad2.dpad_left && !gamepad2.dpad_up) {
             hw.clawWobble.setPosition(CLAW_LASAT);
+            if(oosCD == null || oosCD.milliseconds() >= 700) {
+                soundManager.playSound("oos");
+                oosCD = new ElapsedTime();
+            }
         }
     }
 
@@ -271,6 +323,7 @@ public class TwoDriver extends OpMode {
             timer.reset();
             while(timer.milliseconds() < 200)
                 ;
+
         }
 
         @Override
@@ -278,8 +331,13 @@ public class TwoDriver extends OpMode {
             ElapsedTime timer = new ElapsedTime();
             shootState = ShootState.SHOOTING;
 
+            soundManager.playSound("sheesh1");
             shoot(500);
+
+            soundManager.playSound("sheesh2");
             shoot(400);
+
+            soundManager.playSound("sheesh3");
             shoot(250);
 
             shootState = ShootState.IDLE;
@@ -300,7 +358,6 @@ public class TwoDriver extends OpMode {
             // Porneste motor
             hw.lansat.setVelocity(LANSAT_SPEED_PS);
             waitTimer(3000);
-
             shoot();
             waitTimer(800);
 
@@ -336,17 +393,18 @@ public class TwoDriver extends OpMode {
             hw.intake3.setPosition(INTAKE3_STATIONARY);
             waitTimer(1000);
 
+            soundManager.playSound("sheesh1");
             shoot();
 
             Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
                     .strafeLeft(11.0)
-                    .addDisplacementMarker(()->{shoot();})
+                    .addDisplacementMarker(()->{shoot();soundManager.playSound("sheesh2");})
                     .build();
             drive.followTrajectory(traj);
 
             traj = drive.trajectoryBuilder(drive.getPoseEstimate())
                     .strafeLeft(11.0)
-                    .addDisplacementMarker(()->{shoot();})
+                    .addDisplacementMarker(()->{shoot();soundManager.playSound("sheesh3");})
                     .build();
             drive.followTrajectory(traj);
 

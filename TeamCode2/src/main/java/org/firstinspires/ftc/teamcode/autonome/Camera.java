@@ -57,7 +57,7 @@ public class Camera {
 
         @Override
         public Mat processFrame(Mat input) {
-            Rect cropRect = new Rect(88, 146, 81, 65);
+            Rect cropRect = new Rect(99, 97, 111, 74);
 
             input = input.submat(cropRect);
             Mat filtered = input.clone();
@@ -74,9 +74,9 @@ public class Camera {
             dilateElement = null;
 
             nrPixels = Core.countNonZero(filtered);
-            if(nrPixels >= 1900) {
+            if(nrPixels >= 2500) {
                 ringsNumber = RingsDetectionPipeline.RingsNumber.FOUR;
-            } else if(nrPixels >= 800) {
+            } else if(nrPixels >= 900) {
                 ringsNumber = RingsDetectionPipeline.RingsNumber.ONE;
             } else {
                 ringsNumber = RingsDetectionPipeline.RingsNumber.NONE;

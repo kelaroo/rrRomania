@@ -56,6 +56,11 @@ public class RRHardwareConfig {
         clawWobble.setPosition(CLAW_PRINS);
         impins.setPosition(IMPINS_BWD);
 
+        bratOprit.setPosition(BRAT_OPRIT_INT);
+        baraOprit.setPosition(BARA_OPRIT_INT);
+
+        baraS.setPosition(BARAS_INIT);
+
         /*bratOprit.setPosition(BRAT_OPRIT_EXT_AUTO);
         baraOprit.setPosition(BARA_OPRIT_EXT_AUTO);*/
     }
