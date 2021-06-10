@@ -45,7 +45,7 @@ public class Autonoma extends LinearOpMode {
         Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
 
         while(!isStarted()) {
-            ringsNumber = Camera.RingsDetectionPipeline.RingsNumber.FOUR;//Camera.RingsDetectionPipeline.getNumberOfRings();
+            ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
             telemetry.addData("ringsNumber", ringsNumber);
             telemetry.update();
         }
@@ -299,8 +299,7 @@ public class Autonoma extends LinearOpMode {
             drive.followTrajectory(trajC22); sleep(500);
             intakeOff();
 
-            while(!gamepad1.x)
-                ;
+
 
             sisteme.cuva.setPosition(CUVA_SUS);
 
@@ -320,8 +319,7 @@ public class Autonoma extends LinearOpMode {
             drive.turn(Math.toRadians(178));
             drive.followTrajectory(trajC51);
 
-            while(!gamepad1.x)
-                ;
+
 
             sisteme.bratWobble.setPosition(BRAT_JOS); sleep(350);
             sisteme.clawWobble.setPosition(CLAW_PRINS);
@@ -351,13 +349,13 @@ public class Autonoma extends LinearOpMode {
     void intakeOn() {
         sisteme.intake.setPower(1);
         sisteme.intake2.setPosition(INTAKE2_RIGHT);
-        sisteme.intake3.setPosition(INTAKE3_RIGHT);
+        sisteme.intake3.setPower(INTAKE3_SUCK);
     }
 
     void intakeOff() {
         sisteme.intake.setPower(0);
         sisteme.intake2.setPosition(INTAKE2_STATIONARY);
-        sisteme.intake3.setPosition(INTAKE3_STATIONARY);
+        sisteme.intake3.setPower(0);
     }
 
     public TrajectoryBuilder myTrajectoryBuilder(Pose2d startPose, double maxVelo, double maxAccel){

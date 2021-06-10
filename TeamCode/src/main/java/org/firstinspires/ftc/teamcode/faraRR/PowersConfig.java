@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.faraRR;
 
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+@Deprecated
 public class PowersConfig {
 
     public static final double COEFF_SPEED_HIGH = 0.8;
@@ -9,6 +10,7 @@ public class PowersConfig {
     public static final double COEFF_ROTATE = 0.7;
 
     public static final double INTAKE_SUCK = 0.75;
+    public static final double INTAKE3_SUCK = 0.75;
 
     public static final PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 13.45);
     @Deprecated static final double LANSAT_POWER = 0.675; //0.62;
@@ -45,8 +47,8 @@ public class PowersConfig {
     public static final double BARAS_INT = 0.45;
     public static final double BARAS_INIT = 0.3;
 
-    public static final double BRAT_SUS = 0.85; // 0.98 0.61
-    public static final double BRAT_JOS = 0.25; // 0.5 0.98
+    public static final double BRAT_SUS = 0.25; // 0.85
+    public static final double BRAT_JOS = 0.655; //
     public static final double CLAW_PRINS = 0.48; // 0.25 0.25
     public static final double CLAW_LASAT = 0.98; // 0.65 0.85
 

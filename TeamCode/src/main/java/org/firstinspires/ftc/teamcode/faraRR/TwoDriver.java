@@ -4,12 +4,12 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.systems.Impins;
+import org.firstinspires.ftc.teamcode.systems.threads.OneShotOnly;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
@@ -18,6 +18,8 @@ public class TwoDriver extends OpMode {
 
     HardwareConfig hw;
     SampleMecanumDrive drive;
+
+    Impins impins;
 
     Pose2d lastPose;
 
@@ -50,6 +52,11 @@ public class TwoDriver extends OpMode {
     public void init() {
         hw = new HardwareConfig(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
+
+        impins.createInstance(hardwareMap);
+        impins = Impins.getInstance();
+        impins.impingeSecond();
+
         if(PoseStorage.autoEndPose == null)
             telemetry.addData("Start pose", "null");
         else {
@@ -135,25 +142,25 @@ public class TwoDriver extends OpMode {
             if(gamepad2.left_trigger > 0.2) {
                 hw.intake.setPower(INTAKE_SUCK);
                 hw.intake2.setPosition(INTAKE2_RIGHT);
-                hw.intake3.setPosition(INTAKE3_RIGHT);
+                hw.intake3.setPower(INTAKE3_SUCK);
             } else if(gamepad2.right_trigger > 0.2) {
                 hw.intake.setPower(-INTAKE_SUCK);
                 hw.intake2.setPosition(INTAKE2_LEFT);
-                hw.intake3.setPosition(INTAKE3_LEFT);
+                hw.intake3.setPower(-INTAKE3_SUCK);
             } else {
                 hw.intake.setPower(0);
                 hw.intake2.setPosition(INTAKE2_STATIONARY);
-                hw.intake3.setPosition(INTAKE3_STATIONARY);
+                hw.intake3.setPower(0);
             }
         } else {
             if(gamepad2.left_trigger > 0.2) {
-                hw.intake3.setPosition(INTAKE3_RIGHT);
+                hw.intake3.setPower(INTAKE3_SUCK);
             } else if(gamepad2.right_trigger > 0.2) {
-                hw.intake3.setPosition(INTAKE3_LEFT);
+                hw.intake3.setPower(-INTAKE3_SUCK);
             } else {
                 hw.intake.setPower(0);
                 hw.intake2.setPosition(INTAKE2_STATIONARY);
-                hw.intake3.setPosition(INTAKE3_STATIONARY);
+                hw.intake3.setPower(0);
             }
         }
 
@@ -167,18 +174,16 @@ public class TwoDriver extends OpMode {
         }
 
         // Impins
-        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && shootState == ShootState.IDLE) {
-            /*Thread tAutoShoot = new Thread(new OneButtonShoot());
-            tAutoShoot.start();*/
+        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && impins.state == Impins.State.IDLE) {
             Thread tOneShot = new Thread(new OneShotOnly());
             tOneShot.start();
-        } else if(shootState == ShootState.IDLE && cuvaState == CuvaState.SUS) {
+        } else if(impins.state == Impins.State.IDLE && cuvaState == CuvaState.SUS) {
             if(gamepad2.x)
-                hw.impins.setPosition(IMPINS_FWD);
+                impins.impingeFwd();
             else
-                hw.impins.setPosition(IMPINS_BWD);
-        } else if(shootState == ShootState.IDLE){
-            hw.impins.setPosition(IMPINS_SECOND);
+                impins.impingeBwd();
+        } else if(impins.state == Impins.State.IDLE){
+            impins.impingeSecond();
         }
 
         // Lansat
@@ -260,32 +265,6 @@ public class TwoDriver extends OpMode {
         }
     }
 
-    private class OneShotOnly implements Runnable {
-
-        void shoot(double time) {
-            ElapsedTime timer = new ElapsedTime();
-            hw.impins.setPosition(IMPINS_FWD);
-            while(timer.milliseconds() < time)
-                ;
-            hw.impins.setPosition(IMPINS_BWD);
-            timer.reset();
-            while(timer.milliseconds() < 200)
-                ;
-        }
-
-        @Override
-        public void run() {
-            ElapsedTime timer = new ElapsedTime();
-            shootState = ShootState.SHOOTING;
-
-            shoot(500);
-            shoot(400);
-            shoot(250);
-
-            shootState = ShootState.IDLE;
-        }
-    }
-
     private class AutoPowerShots implements Runnable {
 
         @Override
@@ -325,7 +304,7 @@ public class TwoDriver extends OpMode {
 
             hw.intake.setPower(INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_RIGHT);
-            hw.intake3.setPosition(INTAKE3_RIGHT);
+            hw.intake3.setPower(INTAKE3_SUCK);
             hw.lansat.setVelocity(LANSAT_SPEED_PS);
             /*hw.intake.setPower(0);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
@@ -333,7 +312,7 @@ public class TwoDriver extends OpMode {
             waitTimer(100);
             hw.cuva.setPosition(CUVA_SUS);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
-            hw.intake3.setPosition(INTAKE3_STATIONARY);
+            hw.intake3.setPower(0);
             waitTimer(1000);
 
             shoot();

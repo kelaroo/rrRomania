@@ -13,7 +13,7 @@ public class RRHardwareConfig {
 
     public DcMotor intake;
     public Servo intake2;
-    public Servo intake3;
+    public DcMotor intake3;
 
     public Servo bratWobble;
     public Servo clawWobble;
@@ -42,7 +42,7 @@ public class RRHardwareConfig {
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
-        intake3 = hw.get(Servo.class, "intake3");
+        intake3 = hw.get(DcMotor.class, "intake3");
 
         baraD = hw.get(Servo.class, "baraD");
         baraS = hw.get(Servo.class, "baraS");

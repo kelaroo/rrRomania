@@ -30,7 +30,7 @@ public class HardwareConfig {
 
     public Servo cuva;
     public Servo impins;
-    public Servo intake3;
+    public DcMotor intake3;
 
     public Servo baraOprit; // eh 3
 
@@ -68,7 +68,7 @@ public class HardwareConfig {
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
-        intake3 = hw.get(Servo.class, "intake3");
+        intake3 = hw.get(DcMotor.class, "intake3");
 
         baraD = hw.get(Servo.class, "baraD");
         baraS = hw.get(Servo.class, "baraS");

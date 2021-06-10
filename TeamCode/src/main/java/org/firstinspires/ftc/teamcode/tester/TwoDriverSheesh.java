@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.faraRR.HardwareConfig;
+import org.firstinspires.ftc.teamcode.faraRR.TwoDriver;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAS_EXT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARAS_INT;
@@ -35,6 +36,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATION
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_LEFT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_RIGHT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_STATIONARY;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS;
@@ -183,25 +185,25 @@ public class TwoDriverSheesh extends OpMode {
             if(gamepad2.left_trigger > 0.2) {
                 hw.intake.setPower(INTAKE_SUCK);
                 hw.intake2.setPosition(INTAKE2_RIGHT);
-                hw.intake3.setPosition(INTAKE3_RIGHT);
+                hw.intake3.setPower(INTAKE3_SUCK);
             } else if(gamepad2.right_trigger > 0.2) {
                 hw.intake.setPower(-INTAKE_SUCK);
                 hw.intake2.setPosition(INTAKE2_LEFT);
-                hw.intake3.setPosition(INTAKE3_LEFT);
+                hw.intake3.setPower(-INTAKE3_SUCK);
             } else {
                 hw.intake.setPower(0);
                 hw.intake2.setPosition(INTAKE2_STATIONARY);
-                hw.intake3.setPosition(INTAKE3_STATIONARY);
+                hw.intake3.setPower(0);
             }
         } else {
             if(gamepad2.left_trigger > 0.2) {
-                hw.intake3.setPosition(INTAKE3_RIGHT);
+                hw.intake3.setPower(INTAKE3_SUCK);
             } else if(gamepad2.right_trigger > 0.2) {
-                hw.intake3.setPosition(INTAKE3_LEFT);
+                hw.intake3.setPower(-INTAKE3_SUCK);
             } else {
                 hw.intake.setPower(0);
                 hw.intake2.setPosition(INTAKE2_STATIONARY);
-                hw.intake3.setPosition(INTAKE3_STATIONARY);
+                hw.intake3.setPower(0);
             }
         }
 
@@ -382,7 +384,7 @@ public class TwoDriverSheesh extends OpMode {
 
             hw.intake.setPower(INTAKE_SUCK);
             hw.intake2.setPosition(INTAKE2_RIGHT);
-            hw.intake3.setPosition(INTAKE3_RIGHT);
+            hw.intake3.setPower(INTAKE3_SUCK);
             hw.lansat.setVelocity(LANSAT_SPEED_PS);
             /*hw.intake.setPower(0);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
@@ -390,7 +392,7 @@ public class TwoDriverSheesh extends OpMode {
             waitTimer(100);
             hw.cuva.setPosition(CUVA_SUS);
             hw.intake2.setPosition(INTAKE2_STATIONARY);
-            hw.intake3.setPosition(INTAKE3_STATIONARY);
+            hw.intake3.setPower(0);
             waitTimer(1000);
 
             soundManager.playSound("sheesh1");
