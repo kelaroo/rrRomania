@@ -54,6 +54,9 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksTo
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_B1;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C1;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.lansatCoeff;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -102,8 +105,13 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private Pose2d lastPoseOnTurn;
 
+    DcMotorEx lansat;
+
     public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+
+        lansat = hardwareMap.get(DcMotorEx.class, "odoCenter");
+        lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
 
         dashboard = FtcDashboard.getInstance();
         dashboard.setTelemetryTransmissionInterval(25);
@@ -244,6 +252,9 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         TelemetryPacket packet = new TelemetryPacket();
         Canvas fieldOverlay = packet.fieldOverlay();
+
+        packet.put("targetVelo", LANSAT_AUTO_C1);
+        packet.put("currVelo", lansat.getVelocity());
 
         packet.put("mode", mode);
 

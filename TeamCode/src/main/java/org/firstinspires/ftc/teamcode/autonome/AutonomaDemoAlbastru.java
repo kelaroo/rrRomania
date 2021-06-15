@@ -1,10 +1,5 @@
 package org.firstinspires.ftc.teamcode.autonome;
 
-import android.view.textclassifier.TextClassifierEvent;
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -15,41 +10,54 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
-
-import org.apache.commons.math3.analysis.solvers.BracketedRealFieldUnivariateSolver;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.opencv.core.Mat;
 
-import java.io.SequenceInputStream;
 import java.util.Arrays;
 
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARA_PARCAT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_PARCAT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_LASAT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_PRINS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_BWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_RIGHT;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATIONARY;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_A1;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_B1;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_B2;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C1;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C2;
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class Autonoma extends LinearOpMode {
-    Camera camera;
+public class AutonomaDemoAlbastru extends LinearOpMode {
+    CameraDemoAlbastru camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;
 
-    private final Camera.RingsDetectionPipeline.RingsNumber NONE = Camera.RingsDetectionPipeline.RingsNumber.NONE;
-    private final Camera.RingsDetectionPipeline.RingsNumber ONE = Camera.RingsDetectionPipeline.RingsNumber.ONE;
-    private final Camera.RingsDetectionPipeline.RingsNumber FOUR = Camera.RingsDetectionPipeline.RingsNumber.FOUR;
+    private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber NONE = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.NONE;
+    private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber ONE = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.ONE;
+    private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber FOUR = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.FOUR;
 
-    final Pose2d startPose = new Pose2d(-63.0, -40.0, Math.toRadians(0.0));
+    final Pose2d startPose = new Pose2d(-63.0, 40.0, Math.toRadians(0.0));
 
     @Override
     public void runOpMode() throws InterruptedException {
-        camera = new Camera(hardwareMap);
+        camera = new CameraDemoAlbastru(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
         sisteme = new RRHardwareConfig(hardwareMap);
 
         drive.setPoseEstimate(startPose);
 
-        Camera.RingsDetectionPipeline.RingsNumber ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
+        CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber ringsNumber = CameraDemoAlbastru.RingsDetectionPipeline.getNumberOfRings();
 
         while(!isStarted()) {
-            ringsNumber = Camera.RingsDetectionPipeline.getNumberOfRings();
+            ringsNumber = CameraDemoAlbastru.RingsDetectionPipeline.getNumberOfRings();
             telemetry.addData("ringsNumber", ringsNumber);
             telemetry.update();
         }
@@ -63,68 +71,34 @@ public class Autonoma extends LinearOpMode {
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
-
-            // merge sa lase wobble
-            Trajectory trajA2 = drive.trajectoryBuilder(trajA1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0)))) //
-                    .lineToConstantHeading(new Vector2d(13.0, -55.0))
+            Trajectory trajA2 = drive.trajectoryBuilder(trajA1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
+                    .lineToConstantHeading(new Vector2d(13.0, 55.0))
                     .build();
-
-            // da drumu la wobble
             Trajectory trajA21 = drive.trajectoryBuilder(trajA2.end())
-                    .forward(5.0)
+                    .strafeLeft(40)
                     .build();
-
-            // ia wobble 2
-            Trajectory trajA3 = drive.trajectoryBuilder(trajA21.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
-                    .lineToConstantHeading(new Vector2d(-41.0, -17.0))
-                    .addTemporalMarker(0.5, ()->{ sisteme.bratWobble.setPosition(BRAT_JOS); })
-                    .build();
-
-            // merge sa lase wobble
-            Trajectory trajA4 = drive.trajectoryBuilder(trajA3.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(90.0))))
-                    .lineToConstantHeading(new Vector2d(22.0, -45.0))
-                    .build();
-
-            // parcheaza
-            Trajectory trajA5 = drive.trajectoryBuilder(trajA4.end())
-                    .forward(20.0)
+            Trajectory trajA3 = drive.trajectoryBuilder(trajA21.end())
+                    .strafeRight(40)
                     .build();
 
             drive.followTrajectory(trajA1);
 
-            drive.turn(Math.toRadians(-5.0));
+            drive.turn(Math.toRadians(-10.0));
 
             sleep(150); shoot(); sleep(150); shoot(); sleep(150); shoot();
             sisteme.lansat.setPower(0);
 
-            drive.turn(Math.toRadians(95.0));
+            drive.turn(Math.toRadians(-80.0));
             sisteme.bratWobble.setPosition(BRAT_JOS);
 
             drive.followTrajectory(trajA2);
             sisteme.clawWobble.setPosition(CLAW_LASAT);
+            sleep(300);
+            sisteme.bratWobble.setPosition(BRAT_SUS);
+
             drive.followTrajectory(trajA21);
-
-            sisteme.bratWobble.setPosition(BRAT_SUS);
-            drive.turn(Math.toRadians(-90.0));
-
+            sleep(5000);
             drive.followTrajectory(trajA3);
-
-            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(1000);
-            sisteme.clawWobble.setPosition(CLAW_PRINS);
-
-            drive.turn(Math.toRadians(90.0));
-
-            drive.followTrajectory(trajA4);
-
-            sisteme.clawWobble.setPosition(CLAW_LASAT);
-            sisteme.bratWobble.setPosition(BRAT_SUS);
-
-            drive.followTrajectory(trajA5);
-
-            sisteme.bratWobble.setPosition(BRAT_SUS);
-            sisteme.cuva.setPosition(CUVA_JOS);
-
-            drive.turn(Math.toRadians(-90.0));
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
@@ -143,35 +117,22 @@ public class Autonoma extends LinearOpMode {
 
             // se pune in fata inelelor
             Trajectory trajB12 = drive.trajectoryBuilder(trajB1.end())
-                    .strafeLeft(8.0)
+                    .strafeRight(8.0)
                     .build();
 
             // suge //TODO: aici e unghiu ----------------------------------------------------------------------------v
-            Trajectory trajB2 = drive.trajectoryBuilder(trajB12.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-8.5))))
+            Trajectory trajB2 = drive.trajectoryBuilder(trajB12.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-9.5))))
                     .forward(18.0)
                     .build();
 
             // lasa wobble
             Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(0.0))))
-                    .lineToLinearHeading(new Pose2d(34.0, -38.0, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(34.0, 38.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
-            // merge sa ia wobble 2
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
-                    .lineToLinearHeading(new Pose2d(-39.0, -21.0, Math.toRadians(0.0)))
-                    .addTemporalMarker(0.3, ()->{sisteme.bratWobble.setPosition(BRAT_SUS);})
-                    .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
-                    .build();
-
-            // merge sa lase wobble
-            Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
-                    .lineToLinearHeading(new Pose2d(23.0, -41.0, Math.toRadians(180.0)))
-                    .build();
-
-            // parcheaza
-            Trajectory trajB6 = drive.trajectoryBuilder(trajB5.end())
-                    .forward(10.0)
+                    .forward(15.0)
                     .build();
 
             drive.followTrajectory(trajB1);
@@ -179,7 +140,7 @@ public class Autonoma extends LinearOpMode {
             drive.followTrajectory(trajB12);
 
             //TODO: daca nu unghiu bun la lansat ( mai sus tre sa schimbi la traiectorie )
-            drive.turn(Math.toRadians(-8.5));
+            drive.turn(Math.toRadians(-9.5));
 
 
             sleep(500);
@@ -204,20 +165,6 @@ public class Autonoma extends LinearOpMode {
             sisteme.clawWobble.setPosition(CLAW_LASAT);
 
             drive.followTrajectory(trajB4);
-
-
-            sisteme.bratWobble.setPosition(BRAT_JOS);
-            sleep(1000);
-            sisteme.clawWobble.setPosition(CLAW_PRINS);
-
-            drive.followTrajectory(trajB5);
-
-            sisteme.clawWobble.setPosition(CLAW_LASAT);
-            sisteme.bratWobble.setPosition(BRAT_SUS);
-
-            drive.followTrajectory(trajB6);
-
-            drive.turn(Math.toRadians(-180.0));
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 

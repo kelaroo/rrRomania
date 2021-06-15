@@ -48,6 +48,13 @@ public class TwoDriver extends OpMode {
     RobotState robotState = RobotState.DRIVER;
     Thread tAutoPS = null;
 
+    enum BaraState {
+        INT, EXT
+    }
+    volatile BaraState baraState = BaraState.INT;
+    Thread tMaturice;
+    ElapsedTime baraTimer;
+
     @Override
     public void init() {
         hw = new HardwareConfig(hardwareMap);
@@ -64,7 +71,7 @@ public class TwoDriver extends OpMode {
             telemetry.addData("Start pose", "initialized");
         }
 
-        //lastPose = drive.getPoseEstimate();
+        baraTimer = new ElapsedTime();
     }
 
     @Override
@@ -118,11 +125,25 @@ public class TwoDriver extends OpMode {
 
         // Bara oprit
         if(gamepad1.right_trigger > 0.2) {
-            hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+            baraState = BaraState.EXT;
             hw.bratOprit.setPosition(BRAT_OPRIT_EXT);
         } else if(gamepad1.right_bumper) {
-            hw.baraOprit.setPosition(BARA_OPRIT_INT);
+            baraState = BaraState.INT;
             hw.bratOprit.setPosition(BRAT_OPRIT_INT);
+        }
+
+        switch (baraState) {
+            case INT:
+                hw.baraOprit.setPosition(BARA_OPRIT_INT);
+                baraTimer.reset();
+                break;
+            case EXT:
+                if(baraTimer.milliseconds() < 100)
+                    hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+                else if(baraTimer.milliseconds() < 200)
+                    hw.baraOprit.setPosition(BARA_OPRIT_EXT2);
+                else if(baraTimer.milliseconds() < 300)
+                    baraTimer.reset();
         }
 
         double RF = hw.clipPower(drive - strafe - rotate) * coeff;
@@ -318,18 +339,44 @@ public class TwoDriver extends OpMode {
             shoot();
 
             Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
-                    .strafeLeft(11.0)
+                    .strafeLeft(12.5) // 11 in
                     .addDisplacementMarker(()->{shoot();})
                     .build();
             drive.followTrajectory(traj);
 
             traj = drive.trajectoryBuilder(drive.getPoseEstimate())
-                    .strafeLeft(11.0)
+                    .strafeLeft(11.5) // 11 in
                     .addDisplacementMarker(()->{shoot();})
                     .build();
             drive.followTrajectory(traj);
 
             robotState = RobotState.DRIVER;
+        }
+    }
+
+    private class MaturiceUpDown implements Runnable {
+
+        ElapsedTime timer;
+
+        @Override
+        public void run() {
+            timer = new ElapsedTime();
+
+            while(true) {
+                switch (baraState) {
+                    case INT:
+                        hw.baraOprit.setPosition(BARA_OPRIT_INT);
+                        timer.reset();
+                        break;
+                    case EXT:
+                        if(timer.milliseconds() < 100)
+                            hw.baraOprit.setPosition(BARA_OPRIT_EXT);
+                        else if(timer.milliseconds() < 200)
+                            hw.baraOprit.setPosition(BARA_OPRIT_EXT2);
+                        else if(timer.milliseconds() < 300)
+                            timer.reset();
+                }
+            }
         }
     }
 }
