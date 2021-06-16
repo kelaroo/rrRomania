@@ -34,7 +34,7 @@ public class PowersConfig {
     public static final double INTAKE3_LEFT = 0;
     public static final double INTAKE3_STATIONARY = 0.5;
 
-    public static final double CUVA_SUS = 0.357;
+    public static final double CUVA_SUS = 0.356;
     public static final double CUVA_JOS = 0.625;
 
     public static final double IMPINS_FWD = 0.00; // 0

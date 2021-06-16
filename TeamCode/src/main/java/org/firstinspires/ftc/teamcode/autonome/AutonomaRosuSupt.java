@@ -47,6 +47,9 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
     final Pose2d startPose = new Pose2d(-63.0, -40.0, Math.toRadians(0.0));
 
+    final double LANSAT_REDS_C1 = 1460;
+    final double LANSAT_REDS_C2 = 1420;
+
     @Override
     public void runOpMode() throws InterruptedException {
         camera = new CameraDemo(hardwareMap);
@@ -172,9 +175,9 @@ public class AutonomaRosuSupt extends LinearOpMode {
         } else { // C
             // merge sa lanseze
             Trajectory trajC1 = drive.trajectoryBuilder(startPose)
-                    .forward(30.0)
+                    .forward(26.7)
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setVelocity(LANSAT_AUTO_C1); // 0.023
+                        sisteme.lansat.setVelocity(LANSAT_REDS_C1); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
@@ -185,24 +188,32 @@ public class AutonomaRosuSupt extends LinearOpMode {
                     .build();
 
             // suge
-            Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 15, 15)
+            Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 50, 70)
                     .forward(4.5)
                     .addTemporalMarker(0, ()->{intakeOn();})
                     .build();
 
             // suge
-            Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 15)
+            Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 30)
                     .forward(4.5)
-                    .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_AUTO_C2); })
+                    .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_REDS_C2); })
+                    .build();
+
+            Trajectory trajC212 = myTrajectoryBuilder(trajC21.end(), 20, 20)
+                    .back(6)
                     .build();
 
             // suge dar e al treilea si nu mai face
-            Trajectory trajC22 = myTrajectoryBuilder(trajC21.end(), 15, 15)
-                    .forward(2.5)
+            Trajectory trajC22 = myTrajectoryBuilder(trajC212.end().plus(new Pose2d(0, 0, Math.toRadians(-8.0))), 50, 70)
+                    .forward(8.5)
+                    .build();
+
+            Trajectory trajC23 = myTrajectoryBuilder(trajC22.end(), 50, 70)
+                    .forward(6.0)
                     .build();
 
             // merge sa lase wobble
-            Trajectory trajC4 = myTrajectoryBuilder(trajC22.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
+            Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
                     .lineToLinearHeading(new Pose2d(55.0, -52.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
@@ -215,24 +226,35 @@ public class AutonomaRosuSupt extends LinearOpMode {
             drive.followTrajectory(trajC1);
 
             //TODO: aici e unghiu de lansat (tre sa schimbi mai sus unde e cu .plus(new Pose2d(....)))
-            drive.turn(Math.toRadians(-5.0));
+            drive.turn(Math.toRadians(-6.0));
             shoot();sleep(70);shoot();sleep(70);shoot();
 
             //TODO: daca ai schimbat unghiu fix mai sus, schimba si aici
-            drive.turn(Math.toRadians(5.0));
+            drive.turn(Math.toRadians(6.0));
 
             drive.followTrajectory(trajC12);
             sisteme.cuva.setPosition(CUVA_JOS);
 
             drive.followTrajectory(trajC2); sleep(250);
             drive.followTrajectory(trajC21); sleep(250);
+            sisteme.cuva.setPosition(CUVA_SUS);
+            drive.followTrajectory(trajC212); sleep(250);
+
+            drive.turn(Math.toRadians(-8.0));
+            sleep(300);
+            shoot();sleep(200);shoot();sleep(200);shoot();
+
+            sisteme.cuva.setPosition(CUVA_JOS);
+
             drive.followTrajectory(trajC22); sleep(250);
+            drive.followTrajectory(trajC23); sleep(250);
+            sleep(500);
             intakeOff();
 
-            sisteme.cuva.setPosition(CUVA_SUS);
+            sisteme.cuva.setPosition(CUVA_SUS); sleep(300);
 
             //TODO: aici e unghiul de la lansat 2
-            drive.turn(Math.toRadians(-9.0));
+            //drive.turn(Math.toRadians(-9.0));
             shoot();sleep(200);shoot();sleep(200);shoot();
 
             sisteme.lansat.setPower(0);
@@ -246,7 +268,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
-            sisteme.bratWobble.setPosition(BRAT_SUS);
+            sisteme.bratWobble.setPosition(BRAT_JOS);
 
             while(opModeIsActive())
                 continue;

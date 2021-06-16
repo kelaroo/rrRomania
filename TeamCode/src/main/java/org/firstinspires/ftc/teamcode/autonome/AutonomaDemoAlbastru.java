@@ -44,7 +44,7 @@ public class AutonomaDemoAlbastru extends LinearOpMode {
     private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber ONE = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.ONE;
     private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber FOUR = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.FOUR;
 
-    final Pose2d startPose = new Pose2d(-63.0, 40.0, Math.toRadians(0.0));
+    final Pose2d startPose = new Pose2d(-63.0, 40.0, Math.toRadians(0.0)); //81 cm // 28.5cm
 
     @Override
     public void runOpMode() throws InterruptedException {
