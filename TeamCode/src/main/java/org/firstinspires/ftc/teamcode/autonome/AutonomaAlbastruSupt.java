@@ -49,6 +49,9 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
     final double LANSAT_REDS_B1 = 1430;
     final double LANSAT_REDS_B2 = 1380;
 
+    final double LANSAT_BLUES_C1 = 1460;
+    final double LANSAT_BLUES_C2 = 1420;
+
     @Override
     public void runOpMode() throws InterruptedException {
         camera = new CameraDemoAlbastru(hardwareMap);
@@ -174,88 +177,86 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
         } else { // C
             // merge sa lanseze
             Trajectory trajC1 = drive.trajectoryBuilder(startPose)
-                    .forward(24.5)
+                    .forward(28.0)
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setVelocity(LANSAT_AUTO_C1); // 0.023
+                        sisteme.lansat.setVelocity(LANSAT_BLUES_C1); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
 
             // se aliniaza sa suga
             Trajectory trajC12 = drive.trajectoryBuilder(trajC1.end())
-                    .strafeLeft(8.0)
+                    .strafeLeft(9.0)
                     .build();
 
             // suge
-            Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 15, 15)
+            Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 50, 70)
                     .forward(4.5)
                     .addTemporalMarker(0, ()->{intakeOn();})
                     .build();
 
             // suge
-            Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 15)
+            Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 30)
                     .forward(4.5)
-                    .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_AUTO_C2); })
+                    .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_BLUES_C2); })
+                    .build();
+
+            Trajectory trajC212 = myTrajectoryBuilder(trajC21.end(), 20, 20)
+                    .back(6)
                     .build();
 
             // suge dar e al treilea si nu mai face
-            Trajectory trajC22 = myTrajectoryBuilder(trajC21.end(), 15, 15)
-                    .forward(2.5)
+            Trajectory trajC22 = myTrajectoryBuilder(trajC212.end().plus(new Pose2d(0, 0, Math.toRadians(-12))), 50, 70)
+                    .forward(8.5)
+                    .build();
+
+            Trajectory trajC23 = myTrajectoryBuilder(trajC22.end(), 50, 70)
+                    .forward(6.0)
                     .build();
 
             // merge sa lase wobble
-            Trajectory trajC4 = myTrajectoryBuilder(trajC22.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
-                    .lineToLinearHeading(new Pose2d(55.0, -52.0, Math.toRadians(180.0)))
+            Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(1))), 60, 60)
+                    .lineToLinearHeading(new Pose2d(55.0, 70, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
-            // merge sa ia wobble 2
-            Trajectory trajC5 = myTrajectoryBuilder(trajC4.end(), 60.0, 60.0)
-                    .lineToConstantHeading(new Vector2d(-32.0, -16.0))
-                    .build();
-
-            // merge putin ca sa ia wobble
-            Trajectory trajC51 = myTrajectoryBuilder(trajC5.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(181))), 60.0, 60.0)
-                    .back(5.0)
-                    .build();
-
-            // merge sa lase wobble
-            Trajectory trajC6 = myTrajectoryBuilder(trajC51.end(), 60.0, 60.0)
-                    .lineToConstantHeading(new Vector2d(48.5, -57.0))
-                    .build();
-
-            // merge sa parcheze
-            Trajectory trajC7 = myTrajectoryBuilder(trajC6.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-183.0))), 60.0, 60.0)
-                    .forward(30.0)
-                    .addTemporalMarker(0, ()->{
-                        sisteme.bratOprit.setPosition(BRAT_PARCAT);
-                        sisteme.baraOprit.setPosition(BARA_PARCAT);})
+            Trajectory trajC5 = myTrajectoryBuilder(trajC4.end(), 40, 40)
+                    .forward(45.0)
                     .build();
 
 
             drive.followTrajectory(trajC1);
 
             //TODO: aici e unghiu de lansat (tre sa schimbi mai sus unde e cu .plus(new Pose2d(....)))
-            drive.turn(Math.toRadians(-5.0));
+            drive.turn(Math.toRadians(-9.5));
             shoot();sleep(70);shoot();sleep(70);shoot();
 
             //TODO: daca ai schimbat unghiu fix mai sus, schimba si aici
-            drive.turn(Math.toRadians(5.0));
+            drive.turn(Math.toRadians(9.5));
 
             drive.followTrajectory(trajC12);
             sisteme.cuva.setPosition(CUVA_JOS);
 
             drive.followTrajectory(trajC2); sleep(250);
             drive.followTrajectory(trajC21); sleep(250);
-            drive.followTrajectory(trajC22); sleep(250);
-            intakeOff();
-
-
-
+            drive.followTrajectory(trajC212); sleep(250);
             sisteme.cuva.setPosition(CUVA_SUS);
 
+            drive.turn(Math.toRadians(-12));
+            sleep(300);
+            shoot();sleep(200);shoot();sleep(200);shoot();
+
+            sisteme.cuva.setPosition(CUVA_JOS);
+
+            drive.followTrajectory(trajC22); sleep(250);
+            drive.followTrajectory(trajC23); sleep(250);
+            sleep(500);
+            intakeOff();
+
+            sisteme.cuva.setPosition(CUVA_SUS); sleep(300);
+
             //TODO: aici e unghiul de la lansat 2
-            drive.turn(Math.toRadians(-9.0));
+            //drive.turn(Math.toRadians(-9.0));
             shoot();sleep(200);shoot();sleep(200);shoot();
 
             sisteme.lansat.setPower(0);
@@ -265,27 +266,11 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             sisteme.clawWobble.setPosition(CLAW_LASAT);
             intakeOff();
 
+            sisteme.bratWobble.setPosition(BRAT_SUS);
             drive.followTrajectory(trajC5);
-
-            drive.turn(Math.toRadians(181));
-            drive.followTrajectory(trajC51);
-
-
-
-            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(350);
-            sisteme.clawWobble.setPosition(CLAW_PRINS);
-
-            drive.followTrajectory(trajC6);
-            drive.turn(Math.toRadians(-183.0));
-
-            sisteme.bratWobble.setPosition(BRAT_JOS); sleep(350);
-            sisteme.clawWobble.setPosition(CLAW_LASAT);
-
-            drive.followTrajectory(trajC7);
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
-            sisteme.bratWobble.setPosition(BRAT_SUS);
 
             while(opModeIsActive())
                 continue;

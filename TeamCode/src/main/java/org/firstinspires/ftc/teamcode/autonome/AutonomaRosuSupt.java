@@ -214,7 +214,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             // merge sa lase wobble
             Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
-                    .lineToLinearHeading(new Pose2d(55.0, -52.0, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(55.0, 52.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
