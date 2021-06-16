@@ -58,7 +58,8 @@ public class CameraDemoAlbastru {
         @Override
         public Mat processFrame(Mat input) {
             //Rect cropRect = new Rect(219, 49, 99, 78);
-            Rect cropRect = new Rect(87, 28, 88, 89);
+            //Rect cropRect = new Rect(87, 28, 88, 89);
+            Rect cropRect = new Rect(130, 43, 101, 72);
 
             input = input.submat(cropRect);
             Mat filtered = input.clone();

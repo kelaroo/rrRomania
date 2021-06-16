@@ -35,7 +35,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C1;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C2;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class AutonomaDemoAlbastru extends LinearOpMode {
+public class AutonomaAlbastruSupt extends LinearOpMode {
     CameraDemoAlbastru camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;
@@ -45,6 +45,9 @@ public class AutonomaDemoAlbastru extends LinearOpMode {
     private final CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber FOUR = CameraDemoAlbastru.RingsDetectionPipeline.RingsNumber.FOUR;
 
     final Pose2d startPose = new Pose2d(-63.0, 40.0, Math.toRadians(0.0)); //81 cm // 28.5cm
+
+    final double LANSAT_REDS_B1 = 1430;
+    final double LANSAT_REDS_B2 = 1380;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -110,24 +113,20 @@ public class AutonomaDemoAlbastru extends LinearOpMode {
             Trajectory trajB1 = drive.trajectoryBuilder(startPose)
                     .forward(26.0)
                     .addTemporalMarker(0.3, ()->{
-                        sisteme.lansat.setVelocity(LANSAT_AUTO_B1);
+                        sisteme.lansat.setVelocity(LANSAT_REDS_B1);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
-
-            // se pune in fata inelelor
-            Trajectory trajB12 = drive.trajectoryBuilder(trajB1.end())
-                    .strafeRight(8.0)
+            Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end())
+                    .strafeLeft(5.0)
                     .build();
-
-            // suge //TODO: aici e unghiu ----------------------------------------------------------------------------v
-            Trajectory trajB2 = drive.trajectoryBuilder(trajB12.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-9.5))))
-                    .forward(18.0)
+            Trajectory trajB21 = drive.trajectoryBuilder(trajB2.end())
+                    .forward(24.0)
                     .build();
 
             // lasa wobble
-            Trajectory trajB3 = drive.trajectoryBuilder(trajB2.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(0.0))))
-                    .lineToLinearHeading(new Pose2d(34.0, 38.0, Math.toRadians(180.0)))
+            Trajectory trajB3 = drive.trajectoryBuilder(trajB21.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-3))))
+                    .lineToLinearHeading(new Pose2d(34.0, 45, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
@@ -137,34 +136,35 @@ public class AutonomaDemoAlbastru extends LinearOpMode {
 
             drive.followTrajectory(trajB1);
 
-            drive.followTrajectory(trajB12);
+            drive.followTrajectory(trajB2);
 
             //TODO: daca nu unghiu bun la lansat ( mai sus tre sa schimbi la traiectorie )
-            drive.turn(Math.toRadians(-9.5));
-
+            drive.turn(Math.toRadians(-9));
 
             sleep(500);
             shoot(); sleep(500); shoot(); sleep(900); shoot();
-            sisteme.lansat.setVelocity(LANSAT_AUTO_B1);
+
+            sisteme.lansat.setVelocity(LANSAT_REDS_B2);
             sisteme.cuva.setPosition(CUVA_JOS);
             intakeOn();
 
-            sisteme.lansat.setVelocity(LANSAT_AUTO_B2);
-            drive.followTrajectory(trajB2);
+            drive.followTrajectory(trajB21);
 
-            sisteme.lansat.setVelocity(LANSAT_AUTO_B2);
-            sleep(800);
+            drive.turn(Math.toRadians(-8.5));
+            sisteme.cuva.setPosition(CUVA_SUS); sleep(600);
+            shoot(); sleep(100);
+            sisteme.cuva.setPosition(CUVA_JOS);
             intakeOff();
-            sisteme.cuva.setPosition(CUVA_SUS); sleep(800);
-            shoot();
-            sisteme.lansat.setPower(0);
-
 
             drive.followTrajectory(trajB3);
 
             sisteme.clawWobble.setPosition(CLAW_LASAT);
 
             drive.followTrajectory(trajB4);
+
+            sisteme.lansat.setPower(0);
+
+            sisteme.bratWobble.setPosition(BRAT_SUS);
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
