@@ -57,7 +57,7 @@ public class CameraDemo {
 
         @Override
         public Mat processFrame(Mat input) {
-            Rect cropRect = new Rect(105, 35, 100, 100);
+            Rect cropRect = new Rect(45, 67, 237, 115);
 
             input = input.submat(cropRect);
             Mat filtered = input.clone();

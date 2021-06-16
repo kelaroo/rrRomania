@@ -80,31 +80,36 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             Trajectory trajA2 = drive.trajectoryBuilder(trajA1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
                     .lineToConstantHeading(new Vector2d(13.0, 55.0))
                     .build();
-            Trajectory trajA21 = drive.trajectoryBuilder(trajA2.end())
+            Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end())
+                    .forward(35)
+                    .build();
+            /*Trajectory trajA21 = drive.trajectoryBuilder(trajA2.end())
                     .strafeLeft(40)
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA21.end())
                     .strafeRight(40)
-                    .build();
+                    .build();*/
 
             drive.followTrajectory(trajA1);
 
-            drive.turn(Math.toRadians(-10.0));
+            drive.turn(Math.toRadians(-6));
 
             sleep(150); shoot(); sleep(150); shoot(); sleep(150); shoot();
             sisteme.lansat.setPower(0);
 
-            drive.turn(Math.toRadians(-80.0));
+            drive.turn(Math.toRadians(-84.0));
             sisteme.bratWobble.setPosition(BRAT_JOS);
 
             drive.followTrajectory(trajA2);
             sisteme.clawWobble.setPosition(CLAW_LASAT);
             sleep(300);
             sisteme.bratWobble.setPosition(BRAT_SUS);
+            drive.followTrajectory(trajA3);
 
+/*
             drive.followTrajectory(trajA21);
             sleep(5000);
-            drive.followTrajectory(trajA3);
+            drive.followTrajectory(trajA3);*/
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
@@ -121,7 +126,7 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
                     })
                     .build();
             Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end())
-                    .strafeLeft(5.0)
+                    .strafeLeft(6.5)
                     .build();
             Trajectory trajB21 = drive.trajectoryBuilder(trajB2.end())
                     .forward(24.0)
@@ -129,12 +134,15 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
 
             // lasa wobble
             Trajectory trajB3 = drive.trajectoryBuilder(trajB21.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-3))))
-                    .lineToLinearHeading(new Pose2d(34.0, 45, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(30, 45, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
             Trajectory trajB4 = drive.trajectoryBuilder(trajB3.end())
                     .forward(15.0)
+                    .build();
+            Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
+                    .strafeLeft(30.0)
                     .build();
 
             drive.followTrajectory(trajB1);
@@ -168,6 +176,10 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             sisteme.lansat.setPower(0);
 
             sisteme.bratWobble.setPosition(BRAT_SUS);
+
+            drive.followTrajectory(trajB5);
+
+            drive.turn(Math.toRadians(-180));
 
             PoseStorage.autoEndPose = drive.getPoseEstimate();
 
@@ -220,7 +232,11 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
-            Trajectory trajC5 = myTrajectoryBuilder(trajC4.end(), 40, 40)
+            Trajectory trajC41 = myTrajectoryBuilder(trajC4.end(), 60, 60)
+                    .strafeLeft(45)
+                    .build();
+
+            Trajectory trajC5 = myTrajectoryBuilder(trajC41.end(), 40, 40)
                     .forward(45.0)
                     .build();
 
@@ -265,6 +281,8 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             drive.followTrajectory(trajC4);
             sisteme.clawWobble.setPosition(CLAW_LASAT);
             intakeOff();
+
+            drive.followTrajectory(trajC41);
 
             sisteme.bratWobble.setPosition(BRAT_SUS);
             drive.followTrajectory(trajC5);

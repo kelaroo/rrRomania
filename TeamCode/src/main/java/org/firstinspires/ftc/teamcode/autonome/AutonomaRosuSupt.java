@@ -134,6 +134,10 @@ public class AutonomaRosuSupt extends LinearOpMode {
                     .forward(15.0)
                     .build();
 
+            Trajectory trajB5 = drive.trajectoryBuilder(trajB4.end())
+                    .strafeRight(28)
+                    .build();
+
             drive.followTrajectory(trajB1);
 
             drive.followTrajectory(trajB2);
@@ -175,7 +179,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
         } else { // C
             // merge sa lanseze
             Trajectory trajC1 = drive.trajectoryBuilder(startPose)
-                    .forward(26.7)
+                    .forward(27)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_REDS_C1); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
@@ -184,18 +188,18 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             // se aliniaza sa suga
             Trajectory trajC12 = drive.trajectoryBuilder(trajC1.end())
-                    .strafeLeft(9.0)
+                    .strafeLeft(13)
                     .build();
 
             // suge
             Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 50, 70)
-                    .forward(4.5)
+                    .forward(6.0)
                     .addTemporalMarker(0, ()->{intakeOn();})
                     .build();
 
             // suge
             Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 30)
-                    .forward(4.5)
+                    .forward(4)
                     .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_REDS_C2); })
                     .build();
 
@@ -214,11 +218,15 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             // merge sa lase wobble
             Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
-                    .lineToLinearHeading(new Pose2d(55.0, 52.0, Math.toRadians(180.0)))
+                    .lineToLinearHeading(new Pose2d(55.0, -52.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
-            Trajectory trajC5 = myTrajectoryBuilder(trajC4.end(), 40, 40)
+            Trajectory trajC41 = myTrajectoryBuilder(trajC4.end(), 60, 60)
+                    .strafeRight(40)
+                    .build();
+
+            Trajectory trajC5 = myTrajectoryBuilder(trajC41.end(), 40, 40)
                     .forward(45.0)
                     .build();
 
@@ -263,6 +271,8 @@ public class AutonomaRosuSupt extends LinearOpMode {
             drive.followTrajectory(trajC4);
             sisteme.clawWobble.setPosition(CLAW_LASAT);
             intakeOff();
+
+            drive.followTrajectory(trajC41);
 
             drive.followTrajectory(trajC5);
 
