@@ -87,12 +87,12 @@ public class AutonomaRosuSimplu extends LinearOpMode {
 
             drive.followTrajectory(trajA1);
 
-            drive.turn(Math.toRadians(-6.0));
+            drive.turn(Math.toRadians(-5));
 
             sleep(150); shoot(); sleep(150); shoot(); sleep(150); shoot();
             sisteme.lansat.setPower(0);
 
-            drive.turn(Math.toRadians(96.0));
+            drive.turn(Math.toRadians(95.0));
             sisteme.bratWobble.setPosition(BRAT_JOS);
 
             drive.followTrajectory(trajA2);
@@ -227,7 +227,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
 
             //TODO: aici e unghiu de lansat (tre sa schimbi mai sus unde e cu .plus(new Pose2d(....)))
             drive.turn(Math.toRadians(8));
-            shoot();sleep(70);shoot();sleep(70);shoot();
+            sleep(200); shoot();sleep(130);shoot();sleep(130);shoot();
 
             //TODO: daca ai schimbat unghiu fix mai sus, schimba si aici
             //drive.turn(Math.toRadians(5.5));

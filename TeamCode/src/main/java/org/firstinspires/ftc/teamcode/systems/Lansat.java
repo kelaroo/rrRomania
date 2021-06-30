@@ -5,33 +5,35 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-public class Lansat {
+public class Lansat implements System {
 
-    // Powers
-    public static final PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 13.45);
-    public static final double LANSAT_SPEED = 1450;
-    public static final double LANSAT_SPEED_PS = 1220;
+    public static final PIDFCoefficients lansatCoeff = new PIDFCoefficients(25, 0.0, 10, 12.8);
     public static final double LANSAT_POWER_AUTO = 0.65;
+    public static final double LANSAT_SPEED = 1450;
+    public static final double LANSAT_SPEED_PS = 1270;
 
-    // Hardware
     DcMotorEx lansat;
 
-    // Singleton
-    private static Lansat instance = null;
+    public enum LansatState {
+        IDLE(0),
+        HIGH_GOAL(1450),
+        POWERSHOTS(1270);
 
-    private Lansat(HardwareMap hw) {
-        lansat = hw.get(DcMotorEx.class, "odoCenter");
+        int speed;
+
+        LansatState(int s) {
+            speed = s;
+        }
+    }
+    public LansatState lansatState = LansatState.IDLE;
+
+    public Lansat(HardwareMap hw) {
+        lansat = hw.get(DcMotorEx.class, "lansat");
         lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
     }
 
-    public static Lansat getInstance(HardwareMap hw) {
-        if(instance == null)
-            instance = new Lansat(hw);
-        return instance;
+    @Override
+    public void update() {
+        lansat.setVelocity(lansatState.speed);
     }
-
-    // Functionality
-    public void lansatHigh() { lansat.setVelocity(LANSAT_SPEED); }
-    public void lansatPS() { lansat.setVelocity(LANSAT_SPEED_PS); }
-    public void lansatStop() { lansat.setPower(0); }
 }

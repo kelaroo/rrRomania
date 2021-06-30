@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.autonome.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.systems.Impins;
-import org.firstinspires.ftc.teamcode.systems.threads.OneShotOnly;
+//import org.firstinspires.ftc.teamcode.systems.threads.OneShotOnly;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
@@ -60,9 +60,9 @@ public class TwoDriver extends OpMode {
         hw = new HardwareConfig(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
 
-        impins.createInstance(hardwareMap);
+        /*impins.createInstance(hardwareMap);
         impins = Impins.getInstance();
-        impins.impingeSecond();
+        impins.impingeSecond();*/
 
         if(PoseStorage.autoEndPose == null)
             telemetry.addData("Start pose", "null");
@@ -195,7 +195,7 @@ public class TwoDriver extends OpMode {
         }
 
         // Impins
-        if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && impins.state == Impins.State.IDLE) {
+        /*if(gamepad2.left_bumper && cuvaState == CuvaState.SUS && impins.state == Impins.State.IDLE) {
             Thread tOneShot = new Thread(new OneShotOnly());
             tOneShot.start();
         } else if(impins.state == Impins.State.IDLE && cuvaState == CuvaState.SUS) {
@@ -205,7 +205,7 @@ public class TwoDriver extends OpMode {
                 impins.impingeBwd();
         } else if(impins.state == Impins.State.IDLE){
             impins.impingeSecond();
-        }
+        }*/
 
         // Lansat
         // SWTICH VITEZA POWERSHOT BY CEI 2 TRAPPERI

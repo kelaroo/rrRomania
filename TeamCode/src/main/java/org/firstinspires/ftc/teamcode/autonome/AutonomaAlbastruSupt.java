@@ -46,6 +46,8 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
 
     final Pose2d startPose = new Pose2d(-63.0, 40.0, Math.toRadians(0.0)); //81 cm // 28.5cm
 
+    final double LANSAT_BLUE_A1 = 1420;
+
     final double LANSAT_REDS_B1 = 1430;
     final double LANSAT_REDS_B2 = 1380;
 
@@ -71,14 +73,14 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
         if(ringsNumber == NONE) { // A
             // merge spre lansat
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)
-                    .forward(60.0)
+                    .forward(50)
                     .addTemporalMarker(0.7, ()->{
-                        sisteme.lansat.setVelocity(LANSAT_AUTO_A1);
+                        sisteme.lansat.setVelocity(LANSAT_BLUE_A1);
                         sisteme.cuva.setPosition(CUVA_SUS);
                     })
                     .build();
             Trajectory trajA2 = drive.trajectoryBuilder(trajA1.end().plus(new Pose2d(0.0, 0.0, Math.toRadians(-90.0))))
-                    .lineToConstantHeading(new Vector2d(13.0, 55.0))
+                    .lineToConstantHeading(new Vector2d(23.5, 60.0))
                     .build();
             Trajectory trajA3 = drive.trajectoryBuilder(trajA2.end())
                     .forward(35)
@@ -92,12 +94,13 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
 
             drive.followTrajectory(trajA1);
 
-            drive.turn(Math.toRadians(-6));
+            drive.turn(Math.toRadians(-4));
 
-            sleep(150); shoot(); sleep(150); shoot(); sleep(150); shoot();
+            sleep(800);
+            sleep(150); shoot(); sleep(250); shoot(); sleep(250); shoot();
             sisteme.lansat.setPower(0);
 
-            drive.turn(Math.toRadians(-84.0));
+            drive.turn(Math.toRadians(-86.0));
             sisteme.bratWobble.setPosition(BRAT_JOS);
 
             drive.followTrajectory(trajA2);
@@ -150,7 +153,7 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             drive.followTrajectory(trajB2);
 
             //TODO: daca nu unghiu bun la lansat ( mai sus tre sa schimbi la traiectorie )
-            drive.turn(Math.toRadians(-9));
+            drive.turn(Math.toRadians(-8.5));
 
             sleep(500);
             shoot(); sleep(500); shoot(); sleep(900); shoot();
@@ -218,7 +221,7 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
                     .build();
 
             // suge dar e al treilea si nu mai face
-            Trajectory trajC22 = myTrajectoryBuilder(trajC212.end().plus(new Pose2d(0, 0, Math.toRadians(-12))), 50, 70)
+            Trajectory trajC22 = myTrajectoryBuilder(trajC212.end().plus(new Pose2d(0, 0, Math.toRadians(-9))), 50, 70)
                     .forward(8.5)
                     .build();
 
@@ -227,40 +230,54 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
                     .build();
 
             // merge sa lase wobble
-            Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(1))), 60, 60)
+            /*Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(0))), 60, 60)
                     .lineToLinearHeading(new Pose2d(55.0, 70, Math.toRadians(180.0)))
+                    .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
+                    .build();*/
+
+            Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(0))), 60, 60)
+                    //.lineToLinearHeading(new Pose2d(67.0, 65.0, Math.toRadians(-90.0)))
+                    .splineToLinearHeading(new Pose2d(67.0, 69.0, Math.toRadians(-90)), Math.toRadians(90.0))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
 
-            Trajectory trajC41 = myTrajectoryBuilder(trajC4.end(), 60, 60)
+            /*Trajectory trajC41 = myTrajectoryBuilder(trajC4.end(), 60, 60)
                     .strafeLeft(45)
                     .build();
 
             Trajectory trajC5 = myTrajectoryBuilder(trajC41.end(), 40, 40)
-                    .forward(45.0)
+                    .forward(35.0)
+                    .build();*/
+
+            Trajectory trajC41 = myTrajectoryBuilder(trajC4.end(), 60, 60)
+                    .forward(23)
+                    .build();
+
+            Trajectory trajC5 = myTrajectoryBuilder(trajC41.end(), 40, 40)
+                    .strafeRight(55)
                     .build();
 
 
             drive.followTrajectory(trajC1);
 
             //TODO: aici e unghiu de lansat (tre sa schimbi mai sus unde e cu .plus(new Pose2d(....)))
-            drive.turn(Math.toRadians(-9.5));
-            shoot();sleep(70);shoot();sleep(70);shoot();
+            drive.turn(Math.toRadians(-7));
+            shoot();sleep(150);shoot();sleep(150);shoot();
 
             //TODO: daca ai schimbat unghiu fix mai sus, schimba si aici
-            drive.turn(Math.toRadians(9.5));
+            drive.turn(Math.toRadians(7));
 
             drive.followTrajectory(trajC12);
             sisteme.cuva.setPosition(CUVA_JOS);
 
-            drive.followTrajectory(trajC2); sleep(250);
+            drive.followTrajectory(trajC2); sleep(300);
             drive.followTrajectory(trajC21); sleep(250);
             drive.followTrajectory(trajC212); sleep(250);
             sisteme.cuva.setPosition(CUVA_SUS);
 
-            drive.turn(Math.toRadians(-12));
+            drive.turn(Math.toRadians(-9));
             sleep(300);
-            shoot();sleep(200);shoot();sleep(200);shoot();
+            shoot();sleep(250);shoot();sleep(250);shoot();
 
             sisteme.cuva.setPosition(CUVA_JOS);
 
