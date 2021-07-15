@@ -103,8 +103,11 @@ public class TwoDriverSheesh extends OpMode {
             telemetry.addData("sheesh3", "Not found (add sheesh3 to src/res/raw)");
         if(!soundManager.addFile("oos"))
             telemetry.addData("oos", "Not found (add oos to src/res/raw)");
+        if(!soundManager.addFile("macarena")){
+            telemetry.addData("macarena", "Not found macarena");
+        }
 
-        telemetry.addData("sheesh sound resource", sheeshFound? "Found": "Can't find\n Add sheesh.wav to /src/main/res/raw");
+        //telemetry.addData("sheesh sound resource", sheeshFound? "Found": "Can't find\n Add sheesh.wav to /src/main/res/raw");
     }
 
 
@@ -260,10 +263,11 @@ public class TwoDriverSheesh extends OpMode {
             hw.clawWobble.setPosition(CLAW_PRINS);
         } else if(gamepad2.dpad_left && !gamepad2.dpad_up) {
             hw.clawWobble.setPosition(CLAW_LASAT);
-            if(oosCD == null || oosCD.milliseconds() >= 700) {
-                soundManager.playSound("oos");
+            soundManager.playSound("macarena");
+            /*if(oosCD == null || oosCD.milliseconds() >= 1800) {
+                soundManager.playSound("macarena");
                 oosCD = new ElapsedTime();
-            }
+            }*/
         }
     }
 

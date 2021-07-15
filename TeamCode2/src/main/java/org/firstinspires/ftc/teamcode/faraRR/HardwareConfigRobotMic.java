@@ -17,13 +17,13 @@ public class HardwareConfigRobotMic {
     public Servo ashTray;
 
     public HardwareConfigRobotMic(HardwareMap hw) {
-        rightFront=hw.get(DcMotor.class, "rightFront");
+        /*rightFront=hw.get(DcMotor.class, "rightFront");
         leftFront=hw.get(DcMotor.class, "leftFront");
         rightBack=hw.get(DcMotor.class, "rightBack");
         leftBack=hw.get(DcMotor.class, "leftBack");
-
+*/
         fan=hw.get(DcMotor.class, "fan");
 
-        ashTray=hw.get(Servo.class, "ashTray");
+        /*ashTray=hw.get(Servo.class, "ashTray");*/
     }
 }

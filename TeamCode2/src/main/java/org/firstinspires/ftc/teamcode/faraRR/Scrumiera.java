@@ -17,7 +17,7 @@ public class Scrumiera extends OpMode {
 
     @Override
     public void loop() {
-        //Driver
+        /*//Driver
         double drive=gamepad1.left_stick_y;
         double rotate=gamepad1.right_stick_x;
 
@@ -30,10 +30,10 @@ public class Scrumiera extends OpMode {
         hw.leftFront.setPower(leftFront);
         hw.leftBack.setPower(leftBack);
         hw.rightFront.setPower(rightFront);
-        telemetry.addData("rightBack" , rightBack);
+        telemetry.addData("rightBack" , rightBack);*/
 
         //Fan
-        double invarte=0.5;
+        double invarte=1;
         if(gamepad1.y){
             hw.fan.setPower(invarte);
         }else if(gamepad1.x){
@@ -41,11 +41,11 @@ public class Scrumiera extends OpMode {
             hw.fan.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         //Ashtray
-        if(gamepad1.b){
+       /* if(gamepad1.b){
             hw.ashTray.setPosition(0.5);
         }else if(gamepad1.a){
             hw.ashTray.setPosition(0.3);
-        }
+        }*/
 
     }
 }
