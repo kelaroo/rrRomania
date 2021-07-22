@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.faraRR;
+package org.firstinspires.ftc.teamcode.tester;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.tester.HardwareConfigRobotMic;
 
 @TeleOp
 public class Scrumiera extends OpMode {

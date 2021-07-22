@@ -16,16 +16,21 @@ public class RoboDancerConfig {
     public Servo St2;
     public Servo St3;
 
-    public RoboDancerConfig(HardwareMap hw){
-        rightBack=hw.get(DcMotor.class,"rightBack");
-        rightFront=hw.get(DcMotor.class,"rightFront");
-        leftBack=hw.get(DcMotor.class,"leftBack");
-        leftFront=hw.get(DcMotor.class,"leftFront");
-        Dr1=hw.get(Servo.class,"Dr1");
-        Dr2=hw.get(Servo.class,"Dr2");
-        Dr3=hw.get(Servo.class,"Dr3");
-        St1=hw.get(Servo.class,"St1");
-        St2=hw.get(Servo.class,"St2");
-        St3=hw.get(Servo.class,"St3");
+    public RoboDancerConfig(HardwareMap hw) {
+        rightBack = hw.get(DcMotor.class, "rightBack");
+        rightFront = hw.get(DcMotor.class, "rightFront");
+        leftBack = hw.get(DcMotor.class, "leftBack");
+        leftFront = hw.get(DcMotor.class, "leftFront");
+
+        Dr1 = hw.get(Servo.class, "dreapta1");
+        Dr2 = hw.get(Servo.class, "dreapta2");
+        Dr3 = hw.get(Servo.class, "dreapta3");
+        St1 = hw.get(Servo.class, "stanga1");
+        St2 = hw.get(Servo.class, "stanga2");
+        St3 = hw.get(Servo.class, "stanga3");
+    }
+
+    public double clipPower(double power) {
+        return (power > 1) ? 1 : ((power < -1) ? -1 : power);
     }
 }
