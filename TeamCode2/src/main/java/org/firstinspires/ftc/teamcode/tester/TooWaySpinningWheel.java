@@ -13,7 +13,6 @@ import java.util.Random;
 public class TooWaySpinningWheel extends LinearOpMode {
 
     DigitalChannel digitalTouch;
-    DcMotor base;
     DcMotor wheel;
 
     @Override
@@ -21,7 +20,6 @@ public class TooWaySpinningWheel extends LinearOpMode {
 
         digitalTouch = hardwareMap.get(DigitalChannel.class, "button");
 
-        base = hardwareMap.get(DcMotor.class, "base");
         wheel =hardwareMap.get(DcMotor.class, "wheel");
 
         digitalTouch.setMode(DigitalChannel.Mode.INPUT);
