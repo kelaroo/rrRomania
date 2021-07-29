@@ -20,13 +20,13 @@ public class RoboDancer extends OpMode {
 
     double coeff = 0.8;
 
-    public static double dr1 = 0.69;
+    public static double dr1 = 0.75;
     public static double dr2 = 0.3;
-    public static double dr3 = 0.54;
+    public static double dr3 = 0.69;
 
-    public static double st1 = 0.21;
+    public static double st1 = 0.05;
     public static double st2 = 1;
-    public static double st3 = 0.84;
+    public static double st3 = 0.68;
 
     public static double cap = 0.53;
 
@@ -82,15 +82,27 @@ public class RoboDancer extends OpMode {
             hw.cap.setPosition(0.7);
             waveDreapta(1);
         } else if(gamepad1.left_bumper){
+            //muie visoiu
             dans(1);
-            waitTimer(1000);
+        } else if(gamepad1.x) {
+            macarenaDance(1);
         } else {
             hw.Dr1.setPosition(dr1);
             hw.St1.setPosition(st1);
+            hw.Dr2.setPosition(dr2);
+            hw.St2.setPosition(st2);
             hw.Dr3.setPosition(dr3);
             hw.St3.setPosition(st3);
             hw.cap.setPosition(cap);
         }
+
+        telemetry.addData("dr1", hw.Dr1.getPosition());
+        telemetry.addData("dr2", hw.Dr2.getPosition());
+        telemetry.addData("dr3", hw.Dr3.getPosition());
+        telemetry.addLine();
+        telemetry.addData("st1", hw.St1.getPosition());
+        telemetry.addData("st2", hw.St2.getPosition());
+        telemetry.addData("st3", hw.St3.getPosition());
 
         /*if(gamepad1.left_stick_button){
             if(macarenaCD == null || macarenaCD.milliseconds() >= 180000){
@@ -156,6 +168,50 @@ public class RoboDancer extends OpMode {
             hw.St3.setPosition(st3);
             cont++;
         }
+    }
+
+    public void macarenaDance(int NrReps){
+
+        hw.St1.setPosition(st1);
+        hw.St2.setPosition(st2);
+        hw.St3.setPosition(st3);
+
+        hw.Dr1.setPosition(dr1);
+        hw.Dr2.setPosition(dr2);
+        hw.Dr3.setPosition(dr3);
+
+        waitTimer(1000);
+
+        hw.Dr1.setPosition(0);
+        hw.St1.setPosition(0.5);
+        hw.Dr3.setPosition(1);
+        hw.St3.setPosition(0.3);
+
+        waitTimer(1000);
+
+        hw.Dr2.setPosition(0.65);
+        hw.St2.setPosition(0.7);
+
+        waitTimer(1000);
+
+        hw.Dr2.setPosition(0);
+        hw.St2.setPosition(0);
+        hw.Dr3.setPosition(0.3);
+        hw.St3.setPosition(1);
+
+        waitTimer(1000);
+
+        hw.Dr2.setPosition(dr2);
+        hw.St2.setPosition(st2);
+        hw.Dr3.setPosition(1);
+        hw.St3.setPosition(0.3);
+
+        waitTimer(1000);
+
+        hw.Dr1.setPosition(0.6);
+        hw.St1.setPosition(0.55);
+
+        waitTimer(1000);
     }
 
     public void waitTimer(int miliseconds){

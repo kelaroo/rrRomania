@@ -13,7 +13,7 @@ public class TooWaySpinningWheelConfig {
     DigitalChannel button;
 
     public void TooWaySpinningWheel(HardwareMap hw){
-        wheel = hw.get(DcMotor.class, "wheel");
+        wheel = hw.get(DcMotor.class, "roata");
 
         button = hw.get(DigitalChannel.class, "button");
         button.setMode(DigitalChannel.Mode.INPUT);
