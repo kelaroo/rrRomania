@@ -15,13 +15,13 @@ public class Impins implements System {
     public static final double IMPINS_SECOND = 0.37;
     public static final double IMPINS_BWD = 0.27;
 
-    Servo impins;
+    public Servo impins;
 
     public enum ImpinsPosition {
         BACK, SECOND, FWD
     }
     public enum ImpinsState {
-        MANUAL, AUTO
+        MANUAL, AUTO, NON_MANUAL
     }
     public ImpinsPosition impinsPosition = ImpinsPosition.SECOND;
     public ImpinsState impinsState = ImpinsState.MANUAL;
@@ -37,7 +37,7 @@ public class Impins implements System {
 
     @Override
     public void update() {
-        if(robot.cuva.cuvaState == Cuva.CuvaState.JOS)
+        if(robot.cuva.cuvaState == Cuva.CuvaState.JOS || impinsState == ImpinsState.NON_MANUAL)
             return;
 
         switch(impinsState) {
@@ -55,10 +55,12 @@ public class Impins implements System {
                     }
                 }
                 else {
-                    autoShootCounter = 0;
+                    autoShootCounter = -1;
                     impinsState = ImpinsState.MANUAL;
                 }
             break;
+            default:
+                break;
         }
 
         switch(impinsPosition) {

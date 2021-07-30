@@ -37,7 +37,6 @@ public class HardwareConfig {
     public Servo baraS;
     public Servo baraD;
 
-
     public HardwareConfig(HardwareMap hw) {
         /// Control Hub
         rightFront = hw.get(DcMotor.class, "right_front");

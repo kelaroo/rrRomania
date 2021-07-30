@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_SUS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_RIGHT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATIONARY;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
@@ -72,11 +73,12 @@ public class Robot {
                 tMoveToPS = null;
                 break;
             case MOVE_TO_PS:
-                if(tMoveToPS == null)
+                if(tMoveToPS == null) {
                     tMoveToPS = new Thread(new MoveToPS());
+                    tMoveToPS.start();
+                }
                 break;
         }
-        telemetry.addData("RobotState", robotState);
 
         for(System system: lSystems)
             system.update();
@@ -91,9 +93,20 @@ public class Robot {
                 ;
         }
 
+        void shoot(int time) {
+            impins.impins.setPosition(impins.IMPINS_FWD);
+            waitTimer(time);
+
+            impins.impins.setPosition(impins.IMPINS_BWD);
+            waitTimer(250);
+        }
+
         @Override
         public void run() {
+            impins.impinsState = Impins.ImpinsState.NON_MANUAL;
+
             intake.intakeState = Intake.IntakeState.SUGE;
+            lansat.lansatState = Lansat.LansatState.POWERSHOTS;
 
             waitTimer(100);
 
@@ -102,20 +115,22 @@ public class Robot {
 
             waitTimer(1000);
 
-            impins.shoot();
+            shoot(250);
 
             Trajectory traj = drive.trajectoryBuilder(drive.getPoseEstimate())
                     .strafeLeft(12.5) // 11 in
-                    .addDisplacementMarker(()->{impins.shoot();})
+                    .addDisplacementMarker(()->{shoot(250);})
                     .build();
             drive.followTrajectory(traj);
 
             traj = drive.trajectoryBuilder(drive.getPoseEstimate())
                     .strafeLeft(11.5) // 11 in
-                    .addDisplacementMarker(()->{impins.shoot();})
+                    .addDisplacementMarker(()->{shoot(250);})
                     .build();
             drive.followTrajectory(traj);
 
+            lansat.lansatState = Lansat.LansatState.IDLE;
+            impins.impinsState = Impins.ImpinsState.MANUAL;
             robotState = RobotState.MANUAL;
         }
     }

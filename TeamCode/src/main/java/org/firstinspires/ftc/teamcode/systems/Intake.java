@@ -50,6 +50,7 @@ public class Intake implements System {
                 break;
             case SCUIPA:
                 if(robot.cuva.cuvaState == Cuva.CuvaState.JOS) {
+                    intake2.setPosition(INTAKE2_OUT);
                     intake.setPower(-INTAKE_IN);
                 }
                 intake3.setPower(-INTAKE3_IN);
