@@ -1,18 +1,20 @@
 package org.firstinspires.ftc.teamcode.systems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Intake implements System {
 
-    public static final double INTAKE_IN = 0.75;
+    public static double INTAKE_IN = 0.75;
 
-    public static final double INTAKE2_IN = 1;
-    public static final double INTAKE2_OUT = 0;
-    public static final double INTAKE2_STATIONARY = 0.5;
+    public static double INTAKE2_IN = 1;
+    public static double INTAKE2_OUT = 0;
+    public static double INTAKE2_STATIONARY = 0.5;
 
-    public static final double INTAKE3_IN = 0.75;
+    public static double INTAKE3_IN = 0.75;
 
     public DcMotor intake;
     public Servo intake2;
@@ -43,8 +45,8 @@ public class Intake implements System {
                 break;
             case SUGE:
                 if(robot.cuva.cuvaState == Cuva.CuvaState.JOS) {
-                    intake.setPower(INTAKE_IN);
                     intake2.setPosition(INTAKE2_IN);
+                    intake.setPower(INTAKE_IN);
                 }
                 intake3.setPower(INTAKE3_IN);
                 break;

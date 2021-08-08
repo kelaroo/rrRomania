@@ -91,11 +91,12 @@ public class TwoDriverTest extends OpMode {
                 robot.impins.impinsState = Impins.ImpinsState.AUTO;
         }
         else if(robot.impins.impinsState == Impins.ImpinsState.MANUAL) {
-            if(robot.cuva.cuvaState == Cuva.CuvaState.SUS)
+            if(robot.cuva.cuvaState == Cuva.CuvaState.SUS) {
                 if (gpad2.x)
                     robot.impins.impinsPosition = Impins.ImpinsPosition.FWD;
                 else
                     robot.impins.impinsPosition = Impins.ImpinsPosition.BACK;
+            }
             else
                 robot.impins.impinsPosition = Impins.ImpinsPosition.SECOND;
         }

@@ -33,10 +33,10 @@ public class RRHardwareConfig {
         bratWobble = hw.get(Servo.class, "bratWobble");
         clawWobble = hw.get(Servo.class, "clawWobble");
 
-        intake = hw.get(DcMotor.class, "odoRight");
+        intake = hw.get(DcMotor.class, "intake");
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        lansat = hw.get(DcMotorEx.class, "odoCenter");
+        lansat = hw.get(DcMotorEx.class, "lansat");
         lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
 

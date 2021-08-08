@@ -115,6 +115,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_AUTO_B1);
                         sisteme.cuva.setPosition(CUVA_SUS);
+                        intakeOn();
                     })
                     .build();
             Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end())
@@ -150,7 +151,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             sisteme.lansat.setVelocity(LANSAT_AUTO_B1);
             sisteme.cuva.setPosition(CUVA_JOS);
-            intakeOn();
+            //intakeOn();
 
             drive.followTrajectory(trajB21);
 
@@ -297,8 +298,8 @@ public class AutonomaRosuSupt extends LinearOpMode {
     }
 
     void intakeOn() {
-        sisteme.intake.setPower(1);
         sisteme.intake2.setPosition(INTAKE2_RIGHT);
+        sisteme.intake.setPower(1);
         sisteme.intake3.setPower(INTAKE3_SUCK);
     }
 

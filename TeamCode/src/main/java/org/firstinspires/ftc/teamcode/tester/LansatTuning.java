@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.systems.Cuva;
+
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_BWD;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
 
@@ -20,12 +22,15 @@ public class LansatTuning extends LinearOpMode {
     final static double TICKS_PER_REV = 28;
 
     public static PIDFCoefficients pidCoefficients = new PIDFCoefficients(25, 0.0, 10, 13.45);//MAX_RPM * 60 / TICKS_PER_REV);
-    public static double targetVelocity = 1350;
+    public static double targetVelocity = 1450;
     public static double currentVelocity = 0;
 
+    public static int AUTO_FWD = 150;
+    public static int AUTO_BWD = 200;
 
     DcMotorEx lansat;
     Servo impins;
+    Servo cuva;
 
     boolean shooting = false;
 
@@ -34,12 +39,15 @@ public class LansatTuning extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = dashboard.getTelemetry();
 
-        lansat = hardwareMap.get(DcMotorEx.class, "odoCenter");
+        lansat = hardwareMap.get(DcMotorEx.class, "lansat");
         lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         impins = hardwareMap.get(Servo.class, "impins");
 
         lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidCoefficients);
+
+        cuva = hardwareMap.get(Servo.class, "cuva");
+        cuva.setPosition(Cuva.CUVA_SUS);
 
         waitForStart();
 
@@ -86,12 +94,12 @@ public class LansatTuning extends LinearOpMode {
             for(int i = 0; i < 3; i++) {
                 impins.setPosition(IMPINS_FWD);
                 timer.reset();
-                while(timer.milliseconds() < 250)
+                while(timer.milliseconds() < AUTO_FWD)
                     continue;
 
                 impins.setPosition(IMPINS_BWD);
                 timer.reset();
-                while(timer.milliseconds() < 250)
+                while(timer.milliseconds() < AUTO_BWD)
                     continue;
             }
 

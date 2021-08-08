@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode.systems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Cuva implements System {
 
     Robot robot;
 
-    public static final double CUVA_SUS = 0.354;
-    public static final double CUVA_JOS = 0.625;
+    public static double CUVA_SUS = 0.354;
+    public static double CUVA_JOS = 0.625;
 
     Servo cuva;
 

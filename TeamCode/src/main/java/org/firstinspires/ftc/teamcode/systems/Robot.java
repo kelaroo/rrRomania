@@ -34,8 +34,8 @@ public class Robot {
     Telemetry telemetry;
 
     public enum RobotSpeed {
-        LOW(0.8),
-        HIGH(0.5);
+        LOW(0.3),
+        HIGH(0.8);
 
         public double coeff;
 
@@ -43,7 +43,7 @@ public class Robot {
             this.coeff = coeff;
         }
     }
-    public RobotSpeed robotSpeed = RobotSpeed.HIGH;
+    public RobotSpeed robotSpeed = RobotSpeed.LOW;
 
     public enum RobotState {
         MANUAL, MOVE_TO_PS
@@ -94,9 +94,11 @@ public class Robot {
         }
 
         void shoot(int time) {
+            impins.impinsPosition = Impins.ImpinsPosition.FWD;
             impins.impins.setPosition(impins.IMPINS_FWD);
             waitTimer(time);
 
+            impins.impinsPosition = Impins.ImpinsPosition.BACK;
             impins.impins.setPosition(impins.IMPINS_BWD);
             waitTimer(250);
         }
