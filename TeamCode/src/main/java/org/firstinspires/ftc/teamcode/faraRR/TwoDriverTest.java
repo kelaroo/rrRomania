@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.systems.BaraOprit;
 import org.firstinspires.ftc.teamcode.systems.Cuva;
 import org.firstinspires.ftc.teamcode.systems.Impins;
 import org.firstinspires.ftc.teamcode.systems.Intake;
@@ -122,6 +123,13 @@ public class TwoDriverTest extends OpMode {
             robot.wobble.clawState = Wobble.ClawState.LASAT;
         else if(gpad2.dpad_right_once)
             robot.wobble.clawState = Wobble.ClawState.PRINS;
+        //endregion
+
+        //region BaraOprit
+        if(gpad1.right_bumper)
+            robot.baraOprit.opritState = BaraOprit.OpritState.INT;
+        else if(gpad1.right_trigger > 0.2)
+            robot.baraOprit.opritState = BaraOprit.OpritState.EXT;
         //endregion
 
         // !Trebuie pus la final ca sa ruleze sistemele

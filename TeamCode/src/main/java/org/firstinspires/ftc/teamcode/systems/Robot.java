@@ -27,6 +27,7 @@ public class Robot {
     public Lansat lansat;
     public Impins impins;
     public Wobble wobble;
+    public BaraOprit baraOprit;
     List<System> lSystems;
 
     public SampleMecanumDrive drive;
@@ -43,7 +44,7 @@ public class Robot {
             this.coeff = coeff;
         }
     }
-    public RobotSpeed robotSpeed = RobotSpeed.LOW;
+    public RobotSpeed robotSpeed = RobotSpeed.HIGH;
 
     public enum RobotState {
         MANUAL, MOVE_TO_PS
@@ -58,7 +59,8 @@ public class Robot {
         lansat = new Lansat(hw);
         impins = new Impins(hw, this);
         wobble = new Wobble(hw);
-        lSystems = Arrays.asList(intake, cuva, lansat, impins, wobble);
+        baraOprit = new BaraOprit(hw);
+        lSystems = Arrays.asList(intake, cuva, lansat, impins, wobble, baraOprit);
 
         drive = new SampleMecanumDrive(hw);
 
