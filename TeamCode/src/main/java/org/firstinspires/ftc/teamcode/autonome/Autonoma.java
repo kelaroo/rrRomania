@@ -13,6 +13,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstra
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
@@ -27,6 +28,7 @@ import java.io.SequenceInputStream;
 import java.util.Arrays;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
+@Disabled
 public class Autonoma extends LinearOpMode {
     Camera camera;
     SampleMecanumDrive drive;

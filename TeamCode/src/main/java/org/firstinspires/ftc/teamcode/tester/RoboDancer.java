@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.tester;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.ftccommon.SoundPlayer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.faraRR.TwoDriver;
 import org.firstinspires.ftc.teamcode.tester.SoundManager;
 
 
-
+@Disabled
 @TeleOp
 public class RoboDancer extends OpMode {
 

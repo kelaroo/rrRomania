@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.tester;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.ftccommon.SoundPlayer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -41,6 +42,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS;
 
+@Disabled
 @TeleOp
 public class TwoDriverSheesh extends OpMode {
 

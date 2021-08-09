@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.systems.Robot;
 import org.firstinspires.ftc.teamcode.systems.Wobble;
 import org.firstinspires.ftc.teamcode.util.GamepadEx;
 
-@TeleOp
+@TeleOp(group = "TeleOps")
 public class TwoDriverTest extends OpMode {
 
     Robot robot;

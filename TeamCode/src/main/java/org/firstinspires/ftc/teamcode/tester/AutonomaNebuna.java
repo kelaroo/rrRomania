@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.tester;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.autonome.RRHardwareConfig;
@@ -15,6 +16,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_PS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_POWER_AUTO;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS;
 
+@Disabled
 @Autonomous
 public class AutonomaNebuna extends LinearOpMode {
 
