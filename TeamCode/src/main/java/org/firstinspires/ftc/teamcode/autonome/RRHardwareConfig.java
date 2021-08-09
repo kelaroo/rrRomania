@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 import org.firstinspires.ftc.teamcode.faraRR.HardwareConfig;
+import org.firstinspires.ftc.teamcode.systems.BaraOprit;
 
 public class RRHardwareConfig {
 
@@ -60,6 +61,9 @@ public class RRHardwareConfig {
         baraOprit.setPosition(BARA_OPRIT_INT);
 
         baraS.setPosition(BARAS_INIT);
+
+        bratOprit.setPosition(BaraOprit.BRAT_OPRIT_INIT);
+        baraOprit.setPosition(BaraOprit.BARA_OPRIT_INIT);
 
         /*bratOprit.setPosition(BRAT_OPRIT_EXT_AUTO);
         baraOprit.setPosition(BARA_OPRIT_EXT_AUTO);*/
