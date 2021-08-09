@@ -42,14 +42,24 @@ public class TwoDriverTest extends OpMode {
         gpad1.update();
         gpad2.update();
 
-        //region Ultimata
-        if(gpad1.dpad_left_once && gpad1.b) {
-            robot.robotState = Robot.RobotState.MOVE_TO_PS;
-        }
         if(robot.robotState != Robot.RobotState.MANUAL) {
             robot.update();
             return;
         }
+
+
+        //region Ultimata
+        if(gpad1.dpad_left && gpad1.b) {
+            robot.robotState = Robot.RobotState.MOVE_TO_PS;
+        } else if(gpad1.dpad_up && gpad1.y) {
+            robot.robotState = Robot.RobotState.ROTATE_TO_PS;
+        }
+
+        // if-ul asta trebuie dupa ultimate ca sa nu se roteasca aiurea
+        if(gpad1.dpad_left_once)
+            robot.drive.turn(Math.toRadians(Robot.AUTO_ROTATE_LEFT));
+        else if(gpad1.dpad_right_once)
+            robot.drive.turn(Math.toRadians(-Robot.AUTO_ROTATE_RIGHT));
         //endregion
 
         //region Drive
@@ -80,8 +90,10 @@ public class TwoDriverTest extends OpMode {
         //endregion
 
         //region Cuva
-        if(gpad2.y)
+        if(gpad2.y) {
             robot.cuva.cuvaState = Cuva.CuvaState.SUS;
+            robot.baraOprit.opritState = BaraOprit.OpritState.INT;
+        }
         else if(gpad2.a)
             robot.cuva.cuvaState = Cuva.CuvaState.JOS;
         //endregion

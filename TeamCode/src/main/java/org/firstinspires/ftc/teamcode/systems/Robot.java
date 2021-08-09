@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.systems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,8 +20,13 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATION
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.lansatCoeff;
 
+@Config
 public class Robot {
+
+    public static double AUTO_ROTATE_LEFT = 10;
+    public static double AUTO_ROTATE_RIGHT = 15;
 
     public Intake intake;
     public Cuva cuva;
@@ -47,11 +53,12 @@ public class Robot {
     public RobotSpeed robotSpeed = RobotSpeed.HIGH;
 
     public enum RobotState {
-        MANUAL, MOVE_TO_PS
+        MANUAL, MOVE_TO_PS, ROTATE_TO_PS
     }
     public RobotState robotState = RobotState.MANUAL;
 
     Thread tMoveToPS = null;
+    Thread tRotateToPS = null;
 
     public Robot(HardwareMap hw, Telemetry t) {
         intake = new Intake(hw, this);
@@ -73,6 +80,7 @@ public class Robot {
         switch(robotState) {
             case MANUAL:
                 tMoveToPS = null;
+                tRotateToPS = null;
                 break;
             case MOVE_TO_PS:
                 if(tMoveToPS == null) {
@@ -80,6 +88,11 @@ public class Robot {
                     tMoveToPS.start();
                 }
                 break;
+            case ROTATE_TO_PS:
+                if(tRotateToPS == null) {
+                    tRotateToPS = new Thread(new RotateToPS());
+                    tRotateToPS.start();
+                }
         }
 
         for(System system: lSystems)
@@ -134,6 +147,53 @@ public class Robot {
             drive.followTrajectory(traj);
 
             lansat.lansatState = Lansat.LansatState.IDLE;
+            impins.impinsState = Impins.ImpinsState.MANUAL;
+            robotState = RobotState.MANUAL;
+        }
+    }
+
+    class RotateToPS implements Runnable {
+
+        void waitTimer(int time) {
+            ElapsedTime timer = new ElapsedTime();
+            while(timer.milliseconds() < time)
+                ;
+        }
+
+        void shoot(int time) {
+            impins.impinsPosition = Impins.ImpinsPosition.FWD;
+            impins.impins.setPosition(impins.IMPINS_FWD);
+            waitTimer(time);
+
+            impins.impinsPosition = Impins.ImpinsPosition.BACK;
+            impins.impins.setPosition(impins.IMPINS_BWD);
+            waitTimer(250);
+        }
+
+        @Override
+        public void run() {
+            impins.impinsState = Impins.ImpinsState.NON_MANUAL;
+
+            intake.intakeState = Intake.IntakeState.SUGE;
+            lansat.lansatState = Lansat.LansatState.POWERSHOTS;
+
+            waitTimer(100);
+
+            cuva.cuvaState = Cuva.CuvaState.SUS;
+            intake.intakeState = Intake.IntakeState.OFF;
+
+            waitTimer(1000);
+
+            shoot(300);
+
+            drive.turn(Math.toRadians(8.0));
+            shoot(250);
+
+            drive.turn(Math.toRadians(8.0));
+            shoot(250);
+
+            lansat.lansatState = Lansat.LansatState.IDLE;
+
             impins.impinsState = Impins.ImpinsState.MANUAL;
             robotState = RobotState.MANUAL;
         }

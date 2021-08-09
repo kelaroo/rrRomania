@@ -9,8 +9,8 @@ public class Cuva implements System {
 
     Robot robot;
 
-    public static double CUVA_SUS = 0.354;
-    public static double CUVA_JOS = 0.625;
+    public static double CUVA_SUS = 0.365;
+    public static double CUVA_JOS = 0.623;
 
     Servo cuva;
 
