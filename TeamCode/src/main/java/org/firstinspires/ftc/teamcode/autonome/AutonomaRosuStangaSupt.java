@@ -64,6 +64,8 @@ public class AutonomaRosuStangaSupt extends LinearOpMode {
             telemetry.update();
         }
 
+        sisteme.lowerBratOprit();
+
         if(ringsNumber == NONE) { // A
 
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)

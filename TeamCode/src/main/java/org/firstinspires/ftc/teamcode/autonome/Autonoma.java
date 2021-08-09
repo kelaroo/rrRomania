@@ -56,6 +56,8 @@ public class Autonoma extends LinearOpMode {
             telemetry.update();
         }
 
+        sisteme.lowerBratOprit();
+
         if(ringsNumber == NONE) { // A
             // merge spre lansat
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)

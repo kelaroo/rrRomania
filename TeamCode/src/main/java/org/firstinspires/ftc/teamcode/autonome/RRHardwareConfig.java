@@ -68,4 +68,9 @@ public class RRHardwareConfig {
         /*bratOprit.setPosition(BRAT_OPRIT_EXT_AUTO);
         baraOprit.setPosition(BARA_OPRIT_EXT_AUTO);*/
     }
+    void lowerBratOprit() {
+        bratOprit.setPosition(BaraOprit.BRAT_OPRIT_AUTO_C);
+        baraOprit.setPosition(BaraOprit.BARA_OPRIT_AUTO_C);
+    }
+
 }

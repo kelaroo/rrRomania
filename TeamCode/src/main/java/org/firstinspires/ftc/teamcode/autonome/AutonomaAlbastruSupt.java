@@ -70,6 +70,8 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             telemetry.update();
         }
 
+        sisteme.lowerBratOprit();
+
         if(ringsNumber == NONE) { // A
             // merge spre lansat
             Trajectory trajA1 = drive.trajectoryBuilder(startPose)
@@ -256,6 +258,7 @@ public class AutonomaAlbastruSupt extends LinearOpMode {
             Trajectory trajC5 = myTrajectoryBuilder(trajC41.end(), 40, 40)
                     .strafeRight(55)
                     .build();
+
 
 
             drive.followTrajectory(trajC1);
