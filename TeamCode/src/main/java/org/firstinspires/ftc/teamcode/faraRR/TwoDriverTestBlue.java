@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.systems.Robot;
 import org.firstinspires.ftc.teamcode.systems.Wobble;
 import org.firstinspires.ftc.teamcode.util.GamepadEx;
 
-@TeleOp(name = "TwoDriver", group = "TeleOps")
-public class TwoDriverTest extends OpMode {
+@TeleOp(name = "TwoDriverBlue", group = "TeleOps")
+public class TwoDriverTestBlue extends OpMode {
 
     Robot robot;
     GamepadEx gpad1;
@@ -29,6 +29,8 @@ public class TwoDriverTest extends OpMode {
 
         gpad1.update();
         gpad2.update();
+
+        Lansat.LANSAT_SPEED = 1440;
     }
 
     @Override
@@ -57,9 +59,9 @@ public class TwoDriverTest extends OpMode {
 
         // if-ul asta trebuie dupa ultimate ca sa nu se roteasca aiurea
         if(gpad1.dpad_left_once)
-            robot.drive.turn(Math.toRadians(Robot.AUTO_ROTATE_LEFT));
+            robot.drive.turn(Math.toRadians(Robot.AUTO_ROTATE_LEFT_BLUE));
         else if(gpad1.dpad_right_once)
-            robot.drive.turn(Math.toRadians(-Robot.AUTO_ROTATE_RIGHT));
+            robot.drive.turn(Math.toRadians(-Robot.AUTO_ROTATE_RIGHT_BLUE));
         //endregion
 
         //region Drive

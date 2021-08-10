@@ -10,7 +10,7 @@ public class BaraOprit implements System {
     public static double BRAT_OPRIT_INIT = 0.67;
     public static double BRAT_OPRIT_INT = 0.69;
     public static double BRAT_OPRIT_EXT = 0.82;
-    public static double BRAT_OPRIT_AUTO_C = 0.75;
+    public static double BRAT_OPRIT_AUTO_C = 0.765;
 
     public static double BARA_OPRIT_INIT = 0.618;
     public static double BARA_OPRIT_INT = 0.6;
@@ -23,7 +23,7 @@ public class BaraOprit implements System {
     public enum OpritState {
         INIT, INT, EXT
     }
-    public OpritState opritState = OpritState.INIT;
+    public OpritState opritState = OpritState.INT;
 
     public BaraOprit(HardwareMap hw) {
         bratOprit = hw.get(Servo.class, "bratOprit");

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.faraRR.TwoDriver;
 
@@ -27,6 +28,9 @@ public class Robot {
 
     public static double AUTO_ROTATE_LEFT = 10;
     public static double AUTO_ROTATE_RIGHT = 15;
+
+    public static double AUTO_ROTATE_LEFT_BLUE = 9;
+    public static double AUTO_ROTATE_RIGHT_BLUE = 14;
 
     public Intake intake;
     public Cuva cuva;
@@ -167,12 +171,15 @@ public class Robot {
 
             impins.impinsPosition = Impins.ImpinsPosition.BACK;
             impins.impins.setPosition(impins.IMPINS_BWD);
-            waitTimer(250);
+            waitTimer(100);
         }
 
         @Override
         public void run() {
             impins.impinsState = Impins.ImpinsState.NON_MANUAL;
+
+            double aux = DriveConstants.MAX_ANG_VEL;
+            DriveConstants.MAX_ANG_VEL = Math.toRadians(30);
 
             intake.intakeState = Intake.IntakeState.SUGE;
             lansat.lansatState = Lansat.LansatState.POWERSHOTS;
@@ -184,13 +191,15 @@ public class Robot {
 
             waitTimer(1000);
 
-            shoot(300);
+            shoot(300); waitTimer(30);
 
-            drive.turn(Math.toRadians(8.0));
-            shoot(250);
+            drive.turnAsync(Math.toRadians(-30));
 
-            drive.turn(Math.toRadians(8.0));
-            shoot(250);
+            waitTimer(120);
+            shoot(100);
+            shoot(100);
+
+            DriveConstants.MAX_ANG_VEL = aux;
 
             lansat.lansatState = Lansat.LansatState.IDLE;
 

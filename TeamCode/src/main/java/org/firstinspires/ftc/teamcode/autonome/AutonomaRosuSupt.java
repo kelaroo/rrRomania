@@ -13,11 +13,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.systems.BaraOprit;
+import org.opencv.core.Mat;
 
 import java.util.Arrays;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BARA_PARCAT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_JOS;
+import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_OPRIT_EXT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_PARCAT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_SUS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_LASAT;
@@ -182,7 +185,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
         } else { // C
             // merge sa lanseze
             Trajectory trajC1 = drive.trajectoryBuilder(startPose)
-                    .forward(27)
+                    .forward(24)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_REDS_C1); // 0.023
                         sisteme.cuva.setPosition(CUVA_SUS);
@@ -191,36 +194,19 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             // se aliniaza sa suga
             Trajectory trajC12 = drive.trajectoryBuilder(trajC1.end())
-                    .strafeLeft(13)
+                    .strafeLeft(8)
                     .build();
 
             // suge
-            Trajectory trajC2 = myTrajectoryBuilder(trajC12.end(), 50, 70)
-                    .forward(6.0)
-                    .addTemporalMarker(0, ()->{intakeOn();})
+            Trajectory trajC2 =  myTrajectoryBuilder(trajC12.end(), 5, 20)
+                    .forward(12)
                     .build();
-
-            // suge
-            Trajectory trajC21 = myTrajectoryBuilder(trajC2.end(), 15, 30)
-                    .forward(4)
-                    .addDisplacementMarker(()->{ sisteme.lansat.setVelocity(LANSAT_REDS_C2); })
-                    .build();
-
-            Trajectory trajC212 = myTrajectoryBuilder(trajC21.end(), 20, 20)
-                    .back(6)
-                    .build();
-
-            // suge dar e al treilea si nu mai face
-            Trajectory trajC22 = myTrajectoryBuilder(trajC212.end().plus(new Pose2d(0, 0, Math.toRadians(-8.0))), 50, 70)
-                    .forward(8.5)
-                    .build();
-
-            Trajectory trajC23 = myTrajectoryBuilder(trajC22.end(), 50, 70)
-                    .forward(6.0)
+            Trajectory trajC3 = myTrajectoryBuilder(trajC2.end(), 5, 20)
+                    .forward(13.0)
                     .build();
 
             // merge sa lase wobble
-            Trajectory trajC4 = myTrajectoryBuilder(trajC23.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
+            Trajectory trajC4 = myTrajectoryBuilder(trajC3.end().plus(new Pose2d(0,0,Math.toRadians(-9.0))), 60, 60)
                     .lineToLinearHeading(new Pose2d(55.0, -52.0, Math.toRadians(180.0)))
                     .addTemporalMarker(0.7, ()->{sisteme.bratWobble.setPosition(BRAT_JOS);})
                     .build();
@@ -235,41 +221,39 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
 
             drive.followTrajectory(trajC1);
-
-            //TODO: aici e unghiu de lansat (tre sa schimbi mai sus unde e cu .plus(new Pose2d(....)))
-            drive.turn(Math.toRadians(-6.0));
-            shoot();sleep(70);shoot();sleep(70);shoot();
-
-            //TODO: daca ai schimbat unghiu fix mai sus, schimba si aici
-            drive.turn(Math.toRadians(6.0));
-
             drive.followTrajectory(trajC12);
-            sisteme.cuva.setPosition(CUVA_JOS);
 
-            drive.followTrajectory(trajC2); sleep(250);
-            drive.followTrajectory(trajC21); sleep(250);
-            sisteme.cuva.setPosition(CUVA_SUS);
-            drive.followTrajectory(trajC212); sleep(250);
+            drive.turn(Math.toRadians(-10));
 
-            drive.turn(Math.toRadians(-8.0));
+            sisteme.cuva.setPosition(CUVA_SUS);sleep(500);
+            shoot();sleep(100);shoot();sleep(100);shoot();
+
+            drive.turn(Math.toRadians(10));
+            sisteme.cuva.setPosition(CUVA_JOS);sleep(150);
+            intakeOn();sleep(300);
+
+            sisteme.lansat.setVelocity(LANSAT_REDS_C2);
+            drive.followTrajectory(trajC2);
+            sleep(400);
+            sisteme.intBratOprit();
+            drive.turn(Math.toRadians(-10));
+            sisteme.intakeOut();
+            sisteme.cuva.setPosition(CUVA_SUS);sleep(500);
+
+            shoot();sleep(100);shoot();sleep(100);shoot();
+            sisteme.cuva.setPosition(CUVA_JOS);sleep(150);
+            intakeOn();
+            drive.turn(Math.toRadians(10));
+
+            drive.followTrajectory(trajC3);
             sleep(300);
-            shoot();sleep(200);shoot();sleep(200);shoot();
+            drive.turn(Math.toRadians(-8));
+            sisteme.cuva.setPosition(CUVA_SUS);sleep(500);
 
+            shoot();sleep(100);shoot();sleep(100);shoot();
+            drive.turn(Math.toRadians(8));
             sisteme.cuva.setPosition(CUVA_JOS);
-
-            drive.followTrajectory(trajC22); sleep(250);
-            drive.followTrajectory(trajC23); sleep(250);
-            sleep(500);
-            intakeOff();
-
-            sisteme.cuva.setPosition(CUVA_SUS); sleep(300);
-
-            //TODO: aici e unghiul de la lansat 2
-            //drive.turn(Math.toRadians(-9.0));
-            shoot();sleep(200);shoot();sleep(200);shoot();
-
             sisteme.lansat.setPower(0);
-            sisteme.cuva.setPosition(CUVA_JOS);
 
             drive.followTrajectory(trajC4);
             sisteme.clawWobble.setPosition(CLAW_LASAT);

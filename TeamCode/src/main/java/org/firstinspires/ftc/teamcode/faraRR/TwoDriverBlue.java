@@ -40,7 +40,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_SPEED_PS
 
 @Deprecated
 @Disabled
-@TeleOp
+@TeleOp(name = "VechiBlue")
 public class TwoDriverBlue extends OpMode {
 
     HardwareConfig hw;

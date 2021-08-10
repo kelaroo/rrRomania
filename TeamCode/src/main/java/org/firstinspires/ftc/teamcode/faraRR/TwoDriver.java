@@ -16,7 +16,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 @Deprecated
 @Disabled
-@TeleOp
+@TeleOp(name = "Vechi")
 public class TwoDriver extends OpMode {
 
     HardwareConfig hw;

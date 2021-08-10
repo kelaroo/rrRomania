@@ -9,6 +9,8 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 import org.firstinspires.ftc.teamcode.faraRR.HardwareConfig;
 import org.firstinspires.ftc.teamcode.systems.BaraOprit;
+import org.firstinspires.ftc.teamcode.systems.Intake;
+import org.firstinspires.ftc.teamcode.systems.Lansat;
 
 public class RRHardwareConfig {
 
@@ -39,7 +41,7 @@ public class RRHardwareConfig {
 
         lansat = hw.get(DcMotorEx.class, "lansat");
         lansat.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, lansatCoeff);
+        lansat.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, Lansat.lansatCoeff);
 
         cuva = hw.get(Servo.class, "cuva");
         impins = hw.get(Servo.class, "impins");
@@ -73,4 +75,14 @@ public class RRHardwareConfig {
         baraOprit.setPosition(BaraOprit.BARA_OPRIT_AUTO_C);
     }
 
+    void intakeOut() {
+        intake.setPower(-1);
+        intake3.setPower(-Intake.INTAKE3_IN);
+        intake2.setPosition(INTAKE2_LEFT);
+    }
+
+    void intBratOprit() {
+        bratOprit.setPosition(BaraOprit.BRAT_OPRIT_INT);
+        baraOprit.setPosition(BaraOprit.BARA_OPRIT_INT);
+    }
 }
