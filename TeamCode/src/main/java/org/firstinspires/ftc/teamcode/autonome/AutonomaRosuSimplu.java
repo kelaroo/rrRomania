@@ -13,23 +13,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.systems.Cuva;
 
 import java.util.Arrays;
 
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_JOS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.BRAT_SUS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CLAW_LASAT;
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_JOS;
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.CUVA_SUS;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_BWD;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.IMPINS_FWD;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_RIGHT;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATIONARY;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_A1;
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_B1;
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C1;
-import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.LANSAT_AUTO_C2;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class AutonomaRosuSimplu extends LinearOpMode {
@@ -71,7 +67,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
                     .forward(60.0)
                     .addTemporalMarker(0.7, ()->{
                         sisteme.lansat.setVelocity(LANSAT_AUTO_A1);
-                        sisteme.cuva.setPosition(CUVA_SUS);
+                        sisteme.cuva.setPosition(Cuva.CUVA_SUS);
                     })
                     .build();
 
@@ -118,7 +114,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
                     .forward(50)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_RED_B1);
-                        sisteme.cuva.setPosition(CUVA_SUS);
+                        sisteme.cuva.setPosition(Cuva.CUVA_SUS);
                     })
                     .build();
 
@@ -127,7 +123,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
                     .forward(26.0)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_RED_B1);
-                        sisteme.cuva.setPosition(CUVA_SUS);
+                        sisteme.cuva.setPosition(Cuva.CUVA_SUS);
                     })
                     .build();
             Trajectory trajB2 = drive.trajectoryBuilder(trajB1.end())
@@ -190,7 +186,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
                     .forward(50)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_RED_C1);
-                        sisteme.cuva.setPosition(CUVA_SUS);
+                        sisteme.cuva.setPosition(Cuva.CUVA_SUS);
                     })
                     .build();
 
@@ -199,7 +195,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
                     .forward(27.0)
                     .addTemporalMarker(0.3, ()->{
                         sisteme.lansat.setVelocity(LANSAT_RED_C1); // 0.023
-                        sisteme.cuva.setPosition(CUVA_SUS);
+                        sisteme.cuva.setPosition(Cuva.CUVA_SUS);
                     })
                     .build();
 
@@ -238,7 +234,7 @@ public class AutonomaRosuSimplu extends LinearOpMode {
             //TODO: aici e unghiul de la lansat 2
 
             sisteme.lansat.setPower(0);
-            //sisteme.cuva.setPosition(CUVA_JOS);
+            //sisteme.cuva.setPosition(Cuva.CUVA_JOS);
 
             drive.followTrajectory(trajC4);
             sisteme.clawWobble.setPosition(CLAW_LASAT);

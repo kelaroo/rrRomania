@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class BaraOprit implements System {
 
-    public static double BRAT_OPRIT_INIT = 0.67;
+    public static double BRAT_OPRIT_INIT = 0.678;
     public static double BRAT_OPRIT_INT = 0.69;
     public static double BRAT_OPRIT_EXT = 0.82;
     public static double BRAT_OPRIT_AUTO_C = 0.765;
 
-    public static double BARA_OPRIT_INIT = 0.618;
+    public static double BARA_OPRIT_INIT = 0.675;
     public static double BARA_OPRIT_INT = 0.6;
     public static double BARA_OPRIT_EXT = 0.14;
     public static double BARA_OPRIT_AUTO_C = 0.05;

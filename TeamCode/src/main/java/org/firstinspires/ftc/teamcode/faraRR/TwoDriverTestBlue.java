@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.systems.BaraOprit;
 import org.firstinspires.ftc.teamcode.systems.Cuva;
 import org.firstinspires.ftc.teamcode.systems.Impins;
@@ -30,7 +31,7 @@ public class TwoDriverTestBlue extends OpMode {
         gpad1.update();
         gpad2.update();
 
-        Lansat.LANSAT_SPEED = 1440;
+        Lansat.LANSAT_SPEED = 1430;
     }
 
     @Override
@@ -54,14 +55,37 @@ public class TwoDriverTestBlue extends OpMode {
         if(gpad1.dpad_left && gpad1.b) {
             robot.robotState = Robot.RobotState.MOVE_TO_PS;
         } else if(gpad1.dpad_up && gpad1.y) {
-            robot.robotState = Robot.RobotState.ROTATE_TO_PS;
+            robot.robotState = Robot.RobotState.ROTATE_TO_PS_BLUE;
+        }
+
+        if(gpad1.left_stick_button_once) {
+            double aux = DriveConstants.MAX_ANG_VEL;
+            double aux2 = DriveConstants.MAX_ANG_ACCEL;
+            DriveConstants.MAX_ANG_VEL = Math.toRadians(50);
+            DriveConstants.MAX_ANG_ACCEL = Math.toRadians(100);
+
+            robot.drive.turnAsync(Math.toRadians(Robot.AUTO_ROTATE_PS1));
+
+            DriveConstants.MAX_ANG_VEL = aux;
+            DriveConstants.MAX_ANG_ACCEL = aux2;
+
+        } else if(gpad1.right_stick_button_once) {
+            double aux = DriveConstants.MAX_ANG_VEL;
+            double aux2 = DriveConstants.MAX_ANG_ACCEL;
+            DriveConstants.MAX_ANG_VEL = Math.toRadians(50);
+            DriveConstants.MAX_ANG_ACCEL = Math.toRadians(100);
+
+            robot.drive.turnAsync(Math.toRadians(Robot.AUTO_ROTATE_PS2));
+
+            DriveConstants.MAX_ANG_VEL = aux;
+            DriveConstants.MAX_ANG_ACCEL = aux2;
         }
 
         // if-ul asta trebuie dupa ultimate ca sa nu se roteasca aiurea
-        if(gpad1.dpad_left_once)
+        /*if(gpad1.dpad_left_once)
             robot.drive.turn(Math.toRadians(Robot.AUTO_ROTATE_LEFT_BLUE));
         else if(gpad1.dpad_right_once)
-            robot.drive.turn(Math.toRadians(-Robot.AUTO_ROTATE_RIGHT_BLUE));
+            robot.drive.turn(Math.toRadians(-Robot.AUTO_ROTATE_RIGHT_BLUE));*/
         //endregion
 
         //region Drive
@@ -79,7 +103,8 @@ public class TwoDriverTestBlue extends OpMode {
         double LB = Range.clip(drive - strafe + rotate, -1, 1) * robot.robotSpeed.coeff;
         double LF = Range.clip(drive + strafe + rotate, -1, 1) * robot.robotSpeed.coeff;
 
-        robot.drive.setMotorPowers(LF, LB, RB, RF);
+        if(gpad1.a == false)
+            robot.drive.setMotorPowers(LF, LB, RB, RF);
         //endregion
 
         //region Intake

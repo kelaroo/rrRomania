@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.*;
 
 import org.firstinspires.ftc.teamcode.faraRR.HardwareConfig;
 import org.firstinspires.ftc.teamcode.systems.BaraOprit;
+import org.firstinspires.ftc.teamcode.systems.Cuva;
 import org.firstinspires.ftc.teamcode.systems.Intake;
 import org.firstinspires.ftc.teamcode.systems.Lansat;
 
@@ -54,7 +55,7 @@ public class RRHardwareConfig {
         baraOprit = hw.get(Servo.class, "baraOprit");
 
         // Servo init
-        cuva.setPosition(CUVA_JOS);
+        cuva.setPosition(Cuva.CUVA_JOS);
         bratWobble.setPosition(BRAT_SUS);
         clawWobble.setPosition(CLAW_PRINS);
         impins.setPosition(IMPINS_BWD);

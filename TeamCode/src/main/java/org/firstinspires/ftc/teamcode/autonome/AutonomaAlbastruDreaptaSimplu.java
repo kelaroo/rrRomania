@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.autonome;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -11,7 +10,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.systems.Cuva;
@@ -28,7 +26,7 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE2_STATION
 import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.INTAKE3_SUCK;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class AutonomaAlbastruSupt extends LinearOpMode {
+public class AutonomaAlbastruDreaptaSimplu extends LinearOpMode {
     CameraDemoAlbastru camera;
     SampleMecanumDrive drive;
     RRHardwareConfig sisteme;

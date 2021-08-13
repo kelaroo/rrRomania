@@ -26,6 +26,9 @@ import static org.firstinspires.ftc.teamcode.faraRR.PowersConfig.lansatCoeff;
 @Config
 public class Robot {
 
+    public static double AUTO_ROTATE_PS1 = -7;
+    public static double AUTO_ROTATE_PS2 = -9;
+
     public static double AUTO_ROTATE_LEFT = 10;
     public static double AUTO_ROTATE_RIGHT = 15;
 
@@ -57,7 +60,7 @@ public class Robot {
     public RobotSpeed robotSpeed = RobotSpeed.HIGH;
 
     public enum RobotState {
-        MANUAL, MOVE_TO_PS, ROTATE_TO_PS
+        MANUAL, MOVE_TO_PS, ROTATE_TO_PS_BLUE, ROTATE_TO_PS_RED
     }
     public RobotState robotState = RobotState.MANUAL;
 
@@ -92,9 +95,14 @@ public class Robot {
                     tMoveToPS.start();
                 }
                 break;
-            case ROTATE_TO_PS:
+            case ROTATE_TO_PS_BLUE:
                 if(tRotateToPS == null) {
-                    tRotateToPS = new Thread(new RotateToPS());
+                    tRotateToPS = new Thread(new RotateToPSBlue());
+                    tRotateToPS.start();
+                }
+            case ROTATE_TO_PS_RED:
+                if(tRotateToPS == null) {
+                    tRotateToPS = new Thread(new RotateToPSRed());
                     tRotateToPS.start();
                 }
         }
@@ -156,7 +164,7 @@ public class Robot {
         }
     }
 
-    class RotateToPS implements Runnable {
+    class RotateToPSBlue implements Runnable {
 
         void waitTimer(int time) {
             ElapsedTime timer = new ElapsedTime();
@@ -196,8 +204,62 @@ public class Robot {
             drive.turnAsync(Math.toRadians(-30));
 
             waitTimer(120);
+
             shoot(100);
+
             shoot(100);
+
+            DriveConstants.MAX_ANG_VEL = aux;
+
+            lansat.lansatState = Lansat.LansatState.IDLE;
+
+            impins.impinsState = Impins.ImpinsState.MANUAL;
+            robotState = RobotState.MANUAL;
+        }
+    }
+    class RotateToPSRed implements Runnable {
+
+        void waitTimer(int time) {
+            ElapsedTime timer = new ElapsedTime();
+            while (timer.milliseconds() < time)
+                ;
+        }
+
+        void shoot(int time) {
+            impins.impinsPosition = Impins.ImpinsPosition.FWD;
+            impins.impins.setPosition(impins.IMPINS_FWD);
+            waitTimer(time);
+
+            impins.impinsPosition = Impins.ImpinsPosition.BACK;
+            impins.impins.setPosition(impins.IMPINS_BWD);
+            waitTimer(130);
+        }
+
+        @Override
+        public void run() {
+            impins.impinsState = Impins.ImpinsState.NON_MANUAL;
+
+            double aux = DriveConstants.MAX_ANG_VEL;
+            DriveConstants.MAX_ANG_VEL = Math.toRadians(25);
+
+            intake.intakeState = Intake.IntakeState.SUGE;
+            lansat.lansatState = Lansat.LansatState.POWERSHOTS;
+
+            waitTimer(100);
+
+            cuva.cuvaState = Cuva.CuvaState.SUS;
+            intake.intakeState = Intake.IntakeState.OFF;
+
+            waitTimer(1000);
+
+            shoot(300);
+            waitTimer(30);
+
+            drive.turnAsync(Math.toRadians(30));
+
+            waitTimer(100);
+            shoot(130);
+            shoot(130);
 
             DriveConstants.MAX_ANG_VEL = aux;
 
