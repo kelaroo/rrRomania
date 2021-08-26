@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode.systems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Wobble implements System {
 
-    public static final double BRAT_SUS = 0.25;
-    public static final double BRAT_JOS = 0.655;
-    public static final double CLAW_PRINS = 0.48;
-    public static final double CLAW_LASAT = 0.98;
+    public static  double BRAT_SUS = 0.25;
+    public static  double BRAT_JOS = 0.68;
+    public static  double CLAW_PRINS = 0.48;
+    public static  double CLAW_LASAT = 0.98;
 
     Servo brat;
     Servo claw;

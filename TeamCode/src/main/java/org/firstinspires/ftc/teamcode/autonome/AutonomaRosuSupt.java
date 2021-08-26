@@ -193,7 +193,7 @@ public class AutonomaRosuSupt extends LinearOpMode {
 
             // suge
             Trajectory trajC2 =  myTrajectoryBuilder(trajC12.end(), 5, 20)
-                    .forward(10)
+                    .forward(11)
                     .build();
             Trajectory trajC3 = myTrajectoryBuilder(trajC2.end(), 5, 20)
                     .forward(13.0)
@@ -217,12 +217,12 @@ public class AutonomaRosuSupt extends LinearOpMode {
             drive.followTrajectory(trajC1);
             drive.followTrajectory(trajC12);
 
-            drive.turn(Math.toRadians(-8.5));
+            drive.turn(Math.toRadians(-9));
 
             sisteme.cuva.setPosition(Cuva.CUVA_SUS);sleep(800);
             shoot();sleep(150);shoot();sleep(150);shoot();
 
-            drive.turn(Math.toRadians(8.5));
+            drive.turn(Math.toRadians(9));
             sisteme.cuva.setPosition(Cuva.CUVA_JOS);sleep(150);
             intakeOn();sleep(300);
 

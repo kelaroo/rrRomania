@@ -74,7 +74,7 @@ public class CameraDreapta {
             dilateElement = null;
 
             nrPixels = Core.countNonZero(filtered);
-            if(nrPixels >= 3000) {
+            if(nrPixels >= 2300) {
                 ringsNumber = RingsNumber.FOUR;
             } else if(nrPixels >= 800) {
                 ringsNumber = RingsNumber.ONE;
